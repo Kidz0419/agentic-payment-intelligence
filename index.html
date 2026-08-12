@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Agentic Payment Intelligence — 连连支付创新产品情报知识库 MVP" />
+  <title>Agentic Payment Intelligence</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f6f5f4;
+      --ink: rgba(0,0,0,.95);
+      --muted: #615d59;
+      --quiet: #a39e98;
+      --line: rgba(0,0,0,.10);
+      --accent: #0075de;
+      --accent-soft: #f2f9ff;
+      --hot: #d44c47;
+      --hot-soft: #fbeceb;
+      --amber: #c88700;
+      --amber-soft: #fbf3db;
+      --blue: #337ea9;
+      --blue-soft: #e7f3f8;
+      --shadow: rgba(0,0,0,.01) 0 1px 3px, rgba(0,0,0,.02) 0 3px 7px, rgba(0,0,0,.02) 0 7px 15px, rgba(0,0,0,.04) 0 14px 28px, rgba(0,0,0,.05) 0 23px 52px;
+      --radius: 8px;
+      --sidebar: 240px;
+      --detail: 520px;
+    }
+
+    * { box-sizing: border-box; }
+    html { color-scheme: light; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    :focus-visible { outline: 2px solid #097fe8; outline-offset: 2px; }
+
+    .app { min-height: 100vh; display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; width: var(--sidebar);
+      padding: 14px 10px 14px;
+      background: #f7f7f5; color: var(--ink); border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; z-index: 20;
+    }
+    .brand { padding: 8px 10px 17px; border-bottom: 1px solid var(--line); }
+    .brand-kicker { font: 600 10px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; color: var(--quiet); }
+    .brand h1 { margin: 7px 0 0; font-size: 16px; line-height: 1.25; letter-spacing: -.015em; }
+    .brand p { margin: 6px 0 0; color: var(--muted); font-size: 11px; }
+
+    nav { margin-top: 12px; display: grid; gap: 2px; }
+    .nav-btn {
+      min-height: 36px; width: 100%; border: 0; border-radius: 5px; background: transparent;
+      color: var(--muted); text-align: left; padding: 0 10px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-btn:hover { background: rgba(55,53,47,.08); color: var(--ink); }
+    .nav-btn.active { color: var(--ink); background: rgba(55,53,47,.10); font-weight: 600; }
+    .nav-count { color: var(--quiet); font: 500 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .sidebar-foot { margin-top: auto; padding: 14px 10px 0; border-top: 1px solid var(--line); }
+    .status { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #1aae39; }
+    .version { margin-top: 8px; color: var(--quiet); font: 10px ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    main { grid-column: 2; min-width: 0; }
+    .topbar {
+      position: sticky; top: 0; z-index: 12; height: 56px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 24px; background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-menu { display: none; }
+    .search-wrap { position: relative; flex: 1; max-width: 720px; }
+    .search {
+      width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 5px;
+      padding: 0 82px 0 39px; background: var(--surface); color: var(--ink);
+    }
+    .search:focus { border-color: var(--accent); }
+    .search-icon { position: absolute; left: 13px; top: 8px; color: var(--muted); }
+    .shortcut { position: absolute; right: 8px; top: 7px; padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--quiet); font-size: 11px; background: var(--surface-2); }
+    .toolbar { margin-left: auto; display: flex; gap: 8px; }
+    .btn {
+      min-height: 34px; border: 1px solid var(--line); border-radius: 4px; padding: 0 12px;
+      background: var(--surface); cursor: pointer; white-space: nowrap;
+    }
+    .btn:hover { background: var(--surface-2); }
+    .btn.primary { color: white; border-color: var(--accent); background: var(--accent); }
+    .btn.primary:hover { background: #005bab; }
+
+    .content { padding: 52px 48px 80px; max-width: 1260px; margin: 0 auto; }
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .eyebrow { color: var(--quiet); font: 600 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .07em; text-transform: uppercase; }
+    .page-head h2 { margin: 9px 0 0; font-size: clamp(30px, 3.4vw, 42px); line-height: 1.08; letter-spacing: -1.1px; }
+    .page-subtitle { margin: 10px 0 0; color: var(--muted); max-width: 760px; font-size: 15px; }
+    .date-chip { color: var(--quiet); font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+
+    .summary-strip {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); margin-bottom: 24px; overflow: hidden;
+    }
+    .metric { padding: 13px 16px; border-right: 1px solid var(--line); }
+    .metric:last-child { border-right: 0; }
+    .metric strong { display: block; font: 600 18px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .metric span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+
+    .filters { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .filter {
+      min-height: 30px; border: 1px solid transparent; border-radius: 5px; background: transparent;
+      padding: 0 9px; color: var(--muted); cursor: pointer;
+    }
+    .filter:hover { color: var(--ink); background: var(--surface-2); }
+    .filter.active { background: rgba(55,53,47,.10); border-color: transparent; color: var(--ink); font-weight: 600; }
+    .filter-divider { width: 1px; height: 22px; background: var(--line); margin: 0 3px; }
+    .select {
+      height: 30px; border: 1px solid transparent; border-radius: 5px; background: var(--surface-2); padding: 0 27px 0 8px; color: var(--muted);
+    }
+
+    .results-head { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; padding: 8px 2px; }
+    .signal-list { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .signal-row {
+      width: 100%; border: 0; border-bottom: 1px solid var(--line); background: var(--surface);
+      padding: 16px; text-align: left; cursor: pointer;
+      display: grid; grid-template-columns: 52px minmax(0, 1fr) 190px; gap: 14px; align-items: start;
+    }
+    .signal-row:last-child { border-bottom: 0; }
+    .signal-row:hover { background: #fbfbfa; }
+    .signal-row.selected { background: var(--accent-soft); box-shadow: inset 3px 0 var(--accent); }
+    .priority { width: 38px; height: 24px; border-radius: 4px; display: grid; place-items: center; font: 700 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .p0 { color: var(--hot); background: var(--hot-soft); }
+    .p1 { color: var(--amber); background: var(--amber-soft); }
+    .p2 { color: var(--blue); background: var(--blue-soft); }
+    .p3 { color: var(--muted); background: var(--surface-2); }
+    .signal-title { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: -.006em; }
+    .signal-summary { margin: 6px 0 0; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
+    .tag { padding: 2px 7px; border: 0; border-radius: 4px; color: var(--muted); font-size: 10px; background: var(--surface-2); }
+    .signal-meta { text-align: right; color: var(--muted); font-size: 11px; }
+    .signal-meta strong { display: block; color: var(--ink); font-size: 12px; margin-bottom: 4px; }
+    .evidence { display: inline-block; margin-top: 7px; padding: 2px 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+    .info-type { display: inline-block; margin: 0 0 5px; padding: 2px 7px; border-radius: 4px; background: #eeeae4; color: #5b554f; font-size: 10px; font-weight: 600; }
+    .signal-meta .info-type { display: block; margin-left: auto; width: fit-content; }
+    .demo-label { display: inline-block; margin-left: 6px; color: var(--hot); font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace; vertical-align: 2px; }
+
+    .empty { display: none; padding: 70px 20px; text-align: center; color: var(--muted); }
+    .empty strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 7px; }
+
+    .detail-backdrop { position: fixed; inset: 0; background: rgba(15,15,15,.12); z-index: 29; opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+    .detail-backdrop.open { opacity: 1; pointer-events: auto; }
+    .detail {
+      position: fixed; z-index: 30; top: 0; right: 0; width: min(var(--detail), 94vw); height: 100vh;
+      background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow);
+      transform: translateX(102%); transition: transform .22s ease; overflow-y: auto;
+    }
+    .detail.open { transform: translateX(0); }
+    .detail-top { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); }
+    .icon-btn { width: 34px; height: 34px; border: 0; border-radius: 4px; background: transparent; cursor: pointer; }
+    .icon-btn:hover { background: var(--surface-2); }
+    .detail-body { padding: 38px 46px 64px; }
+    .detail-body h2 { margin: 18px 0 12px; font-size: 30px; line-height: 1.18; letter-spacing: -.7px; }
+    .detail-lead { color: var(--muted); font-size: 15px; }
+    .detail-section { padding: 20px 0; border-top: 1px solid var(--line); }
+    .detail-section h3 { margin: 0 0 9px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .detail-section p { margin: 0; }
+    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+    .score-item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: center; color: var(--muted); font-size: 11px; }
+    .bar { grid-column: 1 / -1; height: 4px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: #337ea9; }
+    .bullet-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .bullet-list li + li { margin-top: 6px; }
+    .source-link { color: var(--accent); text-decoration: none; word-break: break-all; }
+    .source-link:hover { text-decoration: underline; }
+
+    .methodology { display: none; max-width: 980px; }
+    .methodology.open { display: block; }
+    .method-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: rgba(0,0,0,.02) 0 4px 18px; }
+    .method-cell { padding: 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .method-cell:nth-child(2n) { border-right: 0; }
+    .method-cell:nth-last-child(-n+2) { border-bottom: 0; }
+    .method-cell h3 { margin: 0 0 7px; font-size: 16px; }
+    .method-cell p { margin: 0; color: var(--muted); }
+    .rule-callout { margin: 20px 0; padding: 18px 20px; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius); font-size: 17px; }
+    .rule-callout small { display: block; color: var(--accent); margin-bottom: 6px; font: 700 10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 50; transform: translate(-50%, 18px); opacity: 0; background: #31302e; color: white; padding: 10px 14px; border-radius: 5px; transition: .2s; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    input[type=file] { display: none; }
+
+    @media (max-width: 900px) {
+      :root { --sidebar: 0px; }
+      .app { display: block; }
+      .sidebar { transform: translateX(-102%); width: 230px; transition: transform .2s; }
+      .sidebar.open { transform: translateX(0); }
+      main { grid-column: 1; }
+      .mobile-menu { display: inline-grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+      .toolbar .btn:not(.primary) { display: none; }
+      .signal-row { grid-template-columns: 50px minmax(0,1fr); }
+      .signal-meta { grid-column: 2; text-align: left; display: flex; align-items: center; gap: 8px; }
+      .signal-meta strong { display: inline; margin: 0; }
+      .summary-strip { grid-template-columns: 1fr 1fr; }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 600px) {
+      .topbar { padding: 0 12px; }
+      .content { padding: 19px 14px 50px; }
+      .shortcut { display: none; }
+      .search { padding-right: 12px; }
+      .page-head { align-items: flex-start; flex-direction: column; }
+      .summary-strip { grid-template-columns: 1fr 1fr; }
+      .metric { padding: 12px; }
+      .signal-row { gap: 8px; padding: 14px 2px; }
+      .method-grid { grid-template-columns: 1fr; }
+      .method-cell, .method-cell:nth-child(2n), .method-cell:nth-last-child(-n+2) { border-right: 0; border-bottom: 1px solid var(--line); }
+      .method-cell:last-child { border-bottom: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-kicker">LLIANLIAN · INNOVATION</div>
+        <h1>Agentic Payment<br/>Intelligence</h1>
+        <p>从每日信号到长期知识资产</p>
+      </div>
+      <nav aria-label="知识库视图">
+        <button class="nav-btn active" data-view="today"><span>今日信号</span><span class="nav-count" id="todayCount">0</span></button>
+        <button class="nav-btn" data-view="library"><span>全部知识库</span><span class="nav-count" id="allCount">0</span></button>
+        <button class="nav-btn" data-view="watchlist"><span>战略雷达</span><span class="nav-count" id="watchCount">0</span></button>
+        <button class="nav-btn" data-view="competitor"><span>竞争动态</span><span class="nav-count" id="competitorCount">0</span></button>
+        <button class="nav-btn" data-view="saved"><span>已收藏</span><span class="nav-count" id="savedCount">0</span></button>
+        <button class="nav-btn" data-view="method"><span>筛选方法</span><span class="nav-count">V4</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="status"><span class="status-dot"></span>本地知识库已就绪</div>
+        <div class="version">FILTER RULES · V4.0</div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="打开菜单">☰</button>
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input class="search" id="search" type="search" placeholder="搜索协议、公司、产品、观点或标签…" autocomplete="off" />
+          <span class="shortcut">/ 搜索</span>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="exportBtn">导出 JSON</button>
+          <button class="btn primary" id="importBtn">导入信号</button>
+          <input id="fileInput" type="file" accept="application/json,.json,.jsonl" />
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="signalsView">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow" id="eyebrow">Daily intelligence</div>
+              <h2 id="pageTitle">今日 Agentic Payment 信号</h2>
+              <p class="page-subtitle" id="pageSubtitle">Core Signal 保持高精度；Strategic Radar 捕捉可能改变支付入口、授权、商户关系和跨境结算的前置信号。</p>
+            </div>
+            <div class="date-chip" id="dateChip"></div>
+          </div>
+
+          <div class="summary-strip" aria-label="信号统计">
+            <div class="metric"><strong id="metricP0">0</strong><span>P0 · 立即关注</span></div>
+            <div class="metric"><strong id="metricCore">0</strong><span>Core · 核心信号</span></div>
+            <div class="metric"><strong id="metricRadar">0</strong><span>Radar · 战略雷达</span></div>
+            <div class="metric"><strong id="metricAction">0</strong><span>待调研 / 讨论</span></div>
+          </div>
+
+          <div class="filters" aria-label="筛选器">
+            <button class="filter active" data-priority="all">全部优先级</button>
+            <button class="filter" data-priority="P0">P0</button>
+            <button class="filter" data-priority="P1">P1</button>
+            <button class="filter" data-priority="P2">P2</button>
+            <span class="filter-divider"></span>
+            <select class="select" id="contentFilter" aria-label="内容类型">
+              <option value="all">全部内容类型</option>
+              <option value="official_release">官方发布</option>
+              <option value="technical_update">技术更新</option>
+              <option value="executive_statement">高管发言</option>
+              <option value="media_report">媒体报道</option>
+              <option value="analysis">深度分析</option>
+              <option value="regulatory">监管</option>
+            </select>
+            <select class="select" id="informationFilter" aria-label="信息类型">
+              <option value="all">全部信息类型</option>
+              <option value="product_capability">产品 / 能力</option>
+              <option value="protocol_standard">协议 / 标准</option>
+              <option value="partnership_pilot">合作 / 试点</option>
+              <option value="company_strategy">公司战略</option>
+              <option value="executive_view">高管观点</option>
+              <option value="market_news">市场动态</option>
+              <option value="research_insight">研究 / 洞察</option>
+              <option value="regulation_compliance">监管 / 合规</option>
+              <option value="funding_ma">融资 / 并购</option>
+              <option value="developer_ecosystem">开发者生态</option>
+            </select>
+            <select class="select" id="actionFilter" aria-label="行动建议">
+              <option value="all">全部行动</option>
+              <option value="alert">立即关注</option>
+              <option value="investigate">调研</option>
+              <option value="discuss">讨论</option>
+              <option value="monitor">持续观察</option>
+              <option value="archive">归档</option>
+            </select>
+          </div>
+
+          <div class="results-head"><span id="resultCount">0 条信号</span><span>按优先级与行动价值排序</span></div>
+          <div class="signal-list" id="signalList"></div>
+          <div class="empty" id="empty"><strong>没有匹配的信号</strong>尝试修改搜索词或筛选条件。</div>
+        </section>
+
+        <section class="methodology" id="methodology">
+          <div class="page-head">
+            <div><div class="eyebrow">Methodology · V4</div><h2>双层情报筛选方法</h2><p class="page-subtitle">日报是知识库的每日视图；每条信号都沉淀为可跟踪、可验证、可行动的知识对象。</p></div>
+          </div>
+          <div class="rule-callout"><small>CORE RULE</small>不能解释 Agent 如何用钱、收钱、管钱或被授权花钱，就不进入 Core Signal。</div>
+          <div class="method-grid">
+            <div class="method-cell"><h3>Core Signal</h3><p>明确涉及 Agent 支付、Checkout、钱包、卡、稳定币、API 计费、授权、风控或结算的高精度信号。</p></div>
+            <div class="method-cell"><h3>Strategic Radar</h3><p>支付尚未发生，但可能改变 Agent Commerce 入口、身份、商户关系、跨境资金流或竞争格局的前置信号。</p></div>
+            <div class="method-cell"><h3>三层分类</h3><p>Signal Type 决定进入哪个情报流，Content Type 描述载体形式，Information Type 描述事件本质，避免把“媒体报道”和“协议标准”混为一类。</p></div>
+            <div class="method-cell"><h3>证据优先</h3><p>区分 confirmed、primary statement、reported、inferred 与 speculative，避免把高管计划或媒体报道写成已上线事实。</p></div>
+            <div class="method-cell"><h3>连连视角</h3><p>额外评价跨境价值、商户价值、产品可行动性、竞争影响，以及对连连产品与合作路径的直接相关性。</p></div>
+            <div class="method-cell"><h3>事件而非文章</h3><p>同一事件关联官方、媒体、高管和技术来源；以一手来源为主，减少重复新闻卡片。</p></div>
+            <div class="method-cell"><h3>行动闭环</h3><p>每条 Include / Watchlist 都要给出对连连的影响、产品机会、竞争风险、建议行动、待验证问题和后续触发器。</p></div>
+            <div class="method-cell"><h3>P3 仍可检索</h3><p>低相关内容不推送但不物理删除，保留历史回溯，在后续信号出现时重新评估。</p></div>
+          </div>
+          <p style="margin-top:18px;color:var(--muted)">完整规则见同目录 <strong>FILTER_RULES_V4.md</strong>。</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="detail-backdrop" id="detailBackdrop"></div>
+  <aside class="detail" id="detail" aria-label="信号详情" aria-hidden="true">
+    <div class="detail-top">
+      <button class="icon-btn" id="saveBtn" aria-label="收藏">☆</button>
+      <button class="icon-btn" id="closeDetail" aria-label="关闭">×</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+  </aside>
+  <div class="toast" id="toast"></div>
+
+  <script src="data/latest.js"></script>
+  <script>
+    const demoSignals = [
+      {
+        id: "demo-x402-foundation",
+        demo: true,
+        title: "x402 Foundation 官方仓库与协议更新监控",
+        summary: "将 HTTP 402 与稳定币支付结合，为 Agent 调用付费 API、按次付费和机器支付提供协议路径。此条为知识库演示记录，不代表今日发生了新的正式发布。",
+        decision: "include", relevance_level: "P0", signal_type: "core", content_type: "technical_update", information_type: "protocol_standard", evidence_level: "confirmed",
+        source: "x402 Foundation / Official", url: "https://x402.org/", published_at: "",
+        primary_tags: ["Payment Protocol", "API Monetization", "Stablecoin Payment"], secondary_tags: ["x402", "Pay-per-use API", "Micropayment"],
+        why_it_matters_cn: "x402 把支付动作嵌入网络请求，适合 Agent 自动购买 API、数据和服务，是机器支付的重要技术路线。",
+        potential_impact_on_lianlian_cn: "值得评估连连的收款、跨境结算和商户服务能力是否可以通过类似协议暴露给 Agent。",
+        product_opportunity_cn: "研究 Agent-facing Payment API、稳定币/法币结算桥接和按次付费能力。",
+        competitive_risk_cn: "若协议入口被头部钱包、稳定币公司或 PSP 占据，支付机构可能退化为底层通道。",
+        recommended_action: "investigate", questions_to_validate: ["协议如何处理身份、退款和争议？", "是否支持第三方 PSP 或法币结算服务商？"], follow_up_triggers: ["新版本或正式标准发布", "头部 AI 平台或 PSP 宣布接入"],
+        scores: {agentic_relevance:5,payment_relevance:5,infrastructure_value:5,strategic_value:5,source_quality:5,lianlian_relevance:4,cross_border_value:3,merchant_value:3,product_actionability:5,competitive_impact:4}
+      },
+      {
+        id: "demo-ap2",
+        demo: true,
+        title: "Google AP2：Agent 支付授权与意图表达框架",
+        summary: "关注 Agent 发起交易时用户授权、支付意图、可验证凭证和生态参与方协作。此条基于 Source Kit 中的官方监控项，用作界面演示。",
+        decision: "include", relevance_level: "P0", signal_type: "core", content_type: "technical_update", information_type: "protocol_standard", evidence_level: "confirmed",
+        source: "Google Cloud / GitHub", url: "https://github.com/google-agentic-commerce/AP2", published_at: "",
+        primary_tags: ["Agentic Payment", "Payment Authorization"], secondary_tags: ["AP2", "Delegated Authorization", "Agent Identity"],
+        why_it_matters_cn: "授权与可追责性是 Agent Payment 从演示走向规模化商业应用的关键瓶颈。",
+        potential_impact_on_lianlian_cn: "可能影响支付机构如何接收和验证 Agent 发起的支付指令，以及如何保存用户授权证据。",
+        product_opportunity_cn: "评估 AP2 兼容的授权凭证验证层、风险策略和支付指令 API。",
+        competitive_risk_cn: "若授权标准由 AI 平台和卡组织共同控制，PSP 的接口和数据角色可能被重新定义。",
+        recommended_action: "investigate", questions_to_validate: ["支付服务商在协议中的标准角色是什么？", "如何支持跨境、多币种与本地支付方式？"], follow_up_triggers: ["规范版本更新", "支付服务商正式兼容"],
+        scores: {agentic_relevance:5,payment_relevance:5,infrastructure_value:5,strategic_value:5,source_quality:5,lianlian_relevance:5,cross_border_value:3,merchant_value:4,product_actionability:5,competitive_impact:5}
+      },
+      {
+        id: "demo-visa-tap",
+        demo: true,
+        title: "Visa Trusted Agent Protocol：商户如何识别可信 Agent",
+        summary: "关注 Agent 身份、商户识别、交易可信度与卡网络接受体系。此条为基于官方来源配置的知识库演示记录。",
+        decision: "include", relevance_level: "P1", signal_type: "competitor", content_type: "official_release", information_type: "protocol_standard", evidence_level: "confirmed",
+        source: "Visa Developer", url: "https://developer.visa.com/capabilities/trusted-agent-protocol/overview", published_at: "",
+        primary_tags: ["Agent Commerce", "Agent Identity", "Card Infrastructure"], secondary_tags: ["Trusted Agent", "Merchant Acceptance", "Tokenized Card"],
+        why_it_matters_cn: "Agent 能否被商户和支付网络可靠识别，会直接影响批准率、欺诈责任和 Checkout 体验。",
+        potential_impact_on_lianlian_cn: "收单、商户服务和风险产品可能需要接入或兼容可信 Agent 身份信息。",
+        product_opportunity_cn: "建立 Agent Identity 接收、验证和风控编排能力，并向商户提供统一适配层。",
+        competitive_risk_cn: "卡组织可能通过身份协议增强对 Agent Commerce 数据和规则的控制。",
+        recommended_action: "discuss", questions_to_validate: ["非卡支付方式如何兼容？", "PSP 与收单机构能获得哪些身份字段？"], follow_up_triggers: ["商户试点公布", "更多收单机构接入"],
+        scores: {agentic_relevance:5,payment_relevance:4,infrastructure_value:5,strategic_value:5,source_quality:5,lianlian_relevance:5,cross_border_value:3,merchant_value:5,product_actionability:4,competitive_impact:5}
+      },
+      {
+        id: "demo-stripe-token",
+        demo: true,
+        title: "Stripe Shared Payment Tokens：跨平台委托支付凭证",
+        summary: "关注支付凭证如何在 Agent、AI 平台、商户与支付服务商之间安全传递。此条为方法和界面的演示记录。",
+        decision: "include", relevance_level: "P1", signal_type: "competitor", content_type: "technical_update", information_type: "product_capability", evidence_level: "confirmed",
+        source: "Stripe Docs", url: "https://docs.stripe.com/agentic-commerce/concepts/shared-payment-tokens", published_at: "",
+        primary_tags: ["Payment Authorization", "Card Infrastructure"], secondary_tags: ["Shared Payment Token", "Delegated Authorization", "Checkout Flow"],
+        why_it_matters_cn: "支付凭证委托是 Agent 替用户购物时减少摩擦、控制权限和追踪责任的核心机制。",
+        potential_impact_on_lianlian_cn: "需要判断连连能否发行、接收或转换 Agent Commerce 使用的受限支付凭证。",
+        product_opportunity_cn: "研究具有金额、商户、时间和用途限制的委托支付 Token。",
+        competitive_risk_cn: "头部 PSP 若定义事实标准，可能锁定 AI 平台和商户的接入关系。",
+        recommended_action: "investigate", questions_to_validate: ["Token 是否可跨 PSP 使用？", "退款、撤销和拒付如何关联原授权？"], follow_up_triggers: ["第三方 PSP 支持", "跨平台互操作规范发布"],
+        scores: {agentic_relevance:4,payment_relevance:5,infrastructure_value:5,strategic_value:5,source_quality:5,lianlian_relevance:5,cross_border_value:2,merchant_value:5,product_actionability:5,competitive_impact:5}
+      },
+      {
+        id: "demo-exec-signal",
+        demo: true,
+        title: "高管发言监控示例：开放第三方 PSP 的 Agent Checkout 架构",
+        summary: "演示如何记录尚未成为正式产品的战略表态：必须保留发言者、原话、证据等级和后续验证条件，不得改写为产品已经上线。",
+        decision: "watchlist", relevance_level: "P2", signal_type: "strategic_radar", content_type: "executive_statement", information_type: "executive_view", evidence_level: "primary_statement",
+        source: "演示条目", url: "", published_at: "",
+        primary_tags: ["Agent Commerce", "Merchant / Checkout"], secondary_tags: ["Executive Signal", "PSP Access"],
+        why_it_matters_cn: "AI 平台是否开放第三方支付服务商，将决定支付机构能否直接参与 Agent Commerce 生态。",
+        potential_impact_on_lianlian_cn: "若开放第三方 PSP，可能形成跨境收单、本地支付方式和多币种结算的合作窗口。",
+        product_opportunity_cn: "提前准备 Agent Checkout 能力清单和合作接口方案。",
+        competitive_risk_cn: "若平台只选择少数全球 PSP，窗口期可能较短。",
+        recommended_action: "monitor", questions_to_validate: ["是否代表公司正式战略？", "是否有开发文档、合作伙伴或时间表？"], follow_up_triggers: ["官方产品公告", "API 文档上线", "合作伙伴确认"],
+        scores: {agentic_relevance:4,payment_relevance:4,infrastructure_value:3,strategic_value:5,source_quality:3,lianlian_relevance:5,cross_border_value:4,merchant_value:5,product_actionability:4,competitive_impact:5}
+      },
+      {
+        id: "demo-analysis",
+        demo: true,
+        title: "研究议题：谁将控制 Agent Commerce 的 Checkout 与商户关系？",
+        summary: "深度分析类内容不一定是新闻，但可以沉淀架构比较、责任模型、商业模式与产品问题，作为管理层和产品决策的长期知识资产。",
+        decision: "watchlist", relevance_level: "P2", signal_type: "research", content_type: "analysis", information_type: "research_insight", evidence_level: "inferred",
+        source: "研究主题示例", url: "", published_at: "",
+        primary_tags: ["Agent Commerce", "Merchant / Checkout"], secondary_tags: ["Business Model", "Merchant Relationship"],
+        why_it_matters_cn: "Checkout 控制权决定流量、数据、支付路由、商户关系和商业分成。",
+        potential_impact_on_lianlian_cn: "需要明确连连希望成为底层资金通道、Agent-ready PSP，还是商户 Agent Commerce 接入层。",
+        product_opportunity_cn: "形成平台、Agent、商户、PSP、卡网络五方角色地图和产品路线。",
+        competitive_risk_cn: "AI 平台可能把 PSP 商品化，也可能为具备跨境和本地能力的 PSP 创造新入口。",
+        recommended_action: "discuss", questions_to_validate: ["不同协议如何分配角色？", "商户数据和支付路由由谁控制？"], follow_up_triggers: ["AI 平台发布 Checkout 架构", "大型商户公开接入案例"],
+        scores: {agentic_relevance:4,payment_relevance:4,infrastructure_value:3,strategic_value:5,source_quality:3,lianlian_relevance:5,cross_border_value:4,merchant_value:5,product_actionability:5,competitive_impact:5}
+      }
+    ];
+
+    const state = {
+      view: "today", priority: "all", content: "all", information: "all", action: "all", query: "",
+      selected: null, saved: new Set(JSON.parse(localStorage.getItem("apkb-saved") || "[]")),
+      imported: JSON.parse(localStorage.getItem("apkb-imported") || "[]")
+    };
+
+    const el = id => document.getElementById(id);
+    const dailySignals = Array.isArray(window.DAILY_SIGNALS) ? window.DAILY_SIGNALS : [];
+    const allSignals = () => [...state.imported, ...dailySignals, ...demoSignals];
+    const priorityRank = {P0:0,P1:1,P2:2,P3:3};
+    const actionLabel = {alert:"立即关注",investigate:"调研",discuss:"讨论",monitor:"持续观察",archive:"归档"};
+    const contentLabel = {official_release:"官方发布",technical_update:"技术更新",executive_statement:"高管发言",media_report:"媒体报道",analysis:"深度分析",opinion:"观点",regulatory:"监管"};
+    const informationLabel = {product_capability:"产品 / 能力",protocol_standard:"协议 / 标准",partnership_pilot:"合作 / 试点",company_strategy:"公司战略",executive_view:"高管观点",market_news:"市场动态",research_insight:"研究 / 洞察",regulation_compliance:"监管 / 合规",funding_ma:"融资 / 并购",developer_ecosystem:"开发者生态"};
+    const evidenceLabel = {confirmed:"已确认",primary_statement:"一手发言",reported:"媒体报道",inferred:"推断",speculative:"推测"};
+
+    function dateText(value) {
+      if (!value) return "持续监控";
+      const d = new Date(value); if (Number.isNaN(d.getTime())) return value;
+      return new Intl.DateTimeFormat("zh-CN", {year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+    }
+    function isToday(value) {
+      if (!value) return false;
+      const a = new Date(value), b = new Date();
+      return a.toDateString() === b.toDateString();
+    }
+    function searchable(s) {
+      return [s.title,s.summary,s.source,s.why_it_matters_cn,s.potential_impact_on_lianlian_cn,s.product_opportunity_cn,...(s.primary_tags||[]),...(s.secondary_tags||[])].join(" ").toLowerCase();
+    }
+    function visibleSignals() {
+      let rows = allSignals();
+      if (state.view === "today") rows = rows.filter(s => dailySignals.some(d => d.id === s.id));
+      if (state.view === "watchlist") rows = rows.filter(s => s.signal_type === "strategic_radar" || s.decision === "watchlist");
+      if (state.view === "competitor") rows = rows.filter(s => s.signal_type === "competitor");
+      if (state.view === "saved") rows = rows.filter(s => state.saved.has(s.id));
+      if (state.priority !== "all") rows = rows.filter(s => s.relevance_level === state.priority);
+      if (state.content !== "all") rows = rows.filter(s => s.content_type === state.content);
+      if (state.information !== "all") rows = rows.filter(s => s.information_type === state.information);
+      if (state.action !== "all") rows = rows.filter(s => s.recommended_action === state.action);
+      if (state.query.trim()) {
+        const terms = state.query.toLowerCase().trim().split(/\s+/);
+        rows = rows.filter(s => terms.every(t => searchable(s).includes(t)));
+      }
+      return rows.sort((a,b) => (priorityRank[a.relevance_level] ?? 9) - (priorityRank[b.relevance_level] ?? 9) || (b.scores?.product_actionability||0) - (a.scores?.product_actionability||0));
+    }
+
+    function render() {
+      const rows = visibleSignals();
+      el("signalList").innerHTML = rows.map(s => `
+        <button class="signal-row ${state.selected===s.id?'selected':''}" data-id="${escapeHtml(s.id)}">
+          <span class="priority ${(s.relevance_level||'P3').toLowerCase()}">${escapeHtml(s.relevance_level||'P3')}</span>
+          <span>
+            <h3 class="signal-title">${escapeHtml(s.title)}${s.demo?'<span class="demo-label">DEMO</span>':''}</h3>
+            <p class="signal-summary">${escapeHtml(s.summary||'')}</p>
+            <span class="tags">${(s.primary_tags||[]).slice(0,3).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</span>
+          </span>
+          <span class="signal-meta"><strong>${escapeHtml(s.source||'未知来源')}</strong><span class="info-type">${escapeHtml(informationLabel[s.information_type]||s.information_type||'未分类')}</span><span>${escapeHtml(contentLabel[s.content_type]||s.content_type||'')}</span><br/><span class="evidence">${escapeHtml(evidenceLabel[s.evidence_level]||s.evidence_level||'')}</span><br/>${escapeHtml(dateText(s.published_at))}</span>
+        </button>`).join("");
+      el("resultCount").textContent = `${rows.length} 条信号`;
+      el("empty").style.display = rows.length ? "none" : "block";
+      document.querySelectorAll(".signal-row").forEach(row => row.addEventListener("click", () => openDetail(row.dataset.id)));
+      updateMetrics(); updateCounts();
+    }
+
+    function updateMetrics() {
+      const rows = visibleSignals();
+      el("metricP0").textContent = rows.filter(s=>s.relevance_level==='P0').length;
+      el("metricCore").textContent = rows.filter(s=>s.signal_type==='core').length;
+      el("metricRadar").textContent = rows.filter(s=>s.signal_type==='strategic_radar'||s.decision==='watchlist').length;
+      el("metricAction").textContent = rows.filter(s=>['investigate','discuss'].includes(s.recommended_action)).length;
+    }
+    function updateCounts() {
+      const rows = allSignals();
+      el("allCount").textContent = rows.length;
+      el("todayCount").textContent = dailySignals.length;
+      el("watchCount").textContent = rows.filter(s=>s.signal_type==='strategic_radar'||s.decision==='watchlist').length;
+      el("competitorCount").textContent = rows.filter(s=>s.signal_type==='competitor').length;
+      el("savedCount").textContent = state.saved.size;
+    }
+    function escapeHtml(v) { return String(v ?? '').replace(/[&<>'"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+    function scoreBlock(scores={}) {
+      const labels = {agentic_relevance:'Agentic',payment_relevance:'Payment',infrastructure_value:'基础设施',strategic_value:'战略价值',source_quality:'来源质量',lianlian_relevance:'连连相关',cross_border_value:'跨境价值',merchant_value:'商户价值',product_actionability:'产品行动',competitive_impact:'竞争影响'};
+      return Object.entries(labels).map(([k,l])=>`<div class="score-item"><span>${l}</span><b>${scores[k]??0}/5</b><span class="bar"><i style="width:${(scores[k]??0)*20}%"></i></span></div>`).join('');
+    }
+    function listBlock(items) { return (items&&items.length) ? `<ul class="bullet-list">${items.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>` : '<p style="color:var(--muted)">暂无</p>'; }
+
+    function openDetail(id) {
+      const s = allSignals().find(x=>x.id===id); if (!s) return;
+      state.selected=id;
+      el("detailBody").innerHTML = `
+        <div><span class="priority ${(s.relevance_level||'P3').toLowerCase()}">${escapeHtml(s.relevance_level)}</span><span class="info-type" style="margin-left:7px">${escapeHtml(informationLabel[s.information_type]||s.information_type||'未分类')}</span><span class="evidence" style="margin-left:7px">${escapeHtml(evidenceLabel[s.evidence_level]||s.evidence_level)}</span>${s.demo?'<span class="demo-label">DEMO DATA</span>':''}</div>
+        <h2>${escapeHtml(s.title)}</h2><p class="detail-lead">${escapeHtml(s.summary||'')}</p>
+        <div class="tags">${[...(s.primary_tags||[]),...(s.secondary_tags||[])].map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+        <div class="detail-section"><h3>为什么重要</h3><p>${escapeHtml(s.why_it_matters_cn||'暂无')}</p></div>
+        <div class="detail-section"><h3>对连连的潜在影响</h3><p>${escapeHtml(s.potential_impact_on_lianlian_cn||'暂无')}</p></div>
+        <div class="detail-section"><h3>产品机会</h3><p>${escapeHtml(s.product_opportunity_cn||'暂无')}</p></div>
+        <div class="detail-section"><h3>竞争风险</h3><p>${escapeHtml(s.competitive_risk_cn||'暂无')}</p></div>
+        <div class="detail-section"><h3>评分</h3><div class="score-grid">${scoreBlock(s.scores)}</div></div>
+        <div class="detail-section"><h3>建议行动 · ${escapeHtml(actionLabel[s.recommended_action]||s.recommended_action||'')}</h3>${listBlock(s.questions_to_validate)}</div>
+        <div class="detail-section"><h3>后续触发器</h3>${listBlock(s.follow_up_triggers)}</div>
+        <div class="detail-section"><h3>来源</h3><p>${escapeHtml(s.source||'未知来源')} · ${escapeHtml(dateText(s.published_at))}</p>${s.url?`<p style="margin-top:7px"><a class="source-link" href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.url)}</a></p>`:''}</div>`;
+      el("saveBtn").textContent = state.saved.has(id)?'★':'☆';
+      el("detail").classList.add("open"); el("detailBackdrop").classList.add("open"); el("detail").setAttribute("aria-hidden","false"); render();
+    }
+    function closeDetail(){ el("detail").classList.remove("open"); el("detailBackdrop").classList.remove("open"); el("detail").setAttribute("aria-hidden","true"); state.selected=null; render(); }
+    function toast(msg){ el("toast").textContent=msg; el("toast").classList.add("show"); setTimeout(()=>el("toast").classList.remove("show"),1800); }
+
+    function switchView(view) {
+      state.view=view; closeDetail();
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+      const method=view==='method'; el('signalsView').style.display=method?'none':'block'; el('methodology').classList.toggle('open',method);
+      const titles={today:['Daily intelligence','今日 Agentic Payment 信号','Core Signal 保持高精度；Strategic Radar 捕捉可能改变支付入口、授权、商户关系和跨境结算的前置信号。'],library:['Knowledge base','全部知识库','跨来源、跨时间沉淀的事件、协议、公司、人物与研究议题。'],watchlist:['Strategic radar','战略雷达','支付尚未发生，但可能改变 Agent Commerce 入口、身份、跨境资金流和竞争格局。'],competitor:['Competitive intelligence','竞争动态','跟踪卡组织、PSP、AI 平台与基础设施公司的 Agentic Payment 布局。'],saved:['Saved intelligence','已收藏','你标记为后续调研、讨论或持续跟踪的信号。']};
+      if(!method){ const t=titles[view]||titles.library; el('eyebrow').textContent=t[0]; el('pageTitle').textContent=t[1]; el('pageSubtitle').textContent=t[2]; render(); }
+      el('sidebar').classList.remove('open');
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+    document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.priority=b.dataset.priority;render();}));
+    el('contentFilter').addEventListener('change',e=>{state.content=e.target.value;render();});
+    el('informationFilter').addEventListener('change',e=>{state.information=e.target.value;render();});
+    el('actionFilter').addEventListener('change',e=>{state.action=e.target.value;render();});
+    el('search').addEventListener('input',e=>{state.query=e.target.value; if(state.view==='method') switchView('library'); else render();});
+    el('closeDetail').addEventListener('click',closeDetail); el('detailBackdrop').addEventListener('click',closeDetail);
+    el('saveBtn').addEventListener('click',()=>{ if(!state.selected)return; if(state.saved.has(state.selected))state.saved.delete(state.selected);else state.saved.add(state.selected);localStorage.setItem('apkb-saved',JSON.stringify([...state.saved]));el('saveBtn').textContent=state.saved.has(state.selected)?'★':'☆';toast(state.saved.has(state.selected)?'已收藏':'已取消收藏');updateCounts();});
+    el('mobileMenu').addEventListener('click',()=>el('sidebar').classList.toggle('open'));
+    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==el('search')){e.preventDefault();el('search').focus();}if(e.key==='Escape')closeDetail();});
+
+    el('importBtn').addEventListener('click',()=>el('fileInput').click());
+    el('fileInput').addEventListener('change',async e=>{
+      const file=e.target.files[0]; if(!file)return; const text=await file.text();
+      try {
+        let data; if(file.name.endsWith('.jsonl')) data=text.split(/\n/).filter(Boolean).map(JSON.parse); else data=JSON.parse(text);
+        if(!Array.isArray(data)) data=data.signals||data.items||[data];
+        data=data.map((s,i)=>({...s,id:s.id||s.entity_id||s.signal_id||`import-${Date.now()}-${i}`,scores:s.scores||Object.fromEntries(['agentic_relevance','payment_relevance','infrastructure_value','strategic_value','source_quality','lianlian_relevance','cross_border_value','merchant_value','product_actionability','competitive_impact'].map(k=>[k,s[k]||0]))}));
+        state.imported=[...data,...state.imported]; localStorage.setItem('apkb-imported',JSON.stringify(state.imported)); switchView('library'); toast(`已导入 ${data.length} 条信号`);
+      } catch(err){ toast('导入失败：请检查 JSON / JSONL 格式'); }
+      e.target.value='';
+    });
+    el('exportBtn').addEventListener('click',()=>{
+      const blob=new Blob([JSON.stringify(allSignals(),null,2)],{type:'application/json'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='agentic-payment-knowledge-base.json';a.click();URL.revokeObjectURL(a.href);toast('知识库 JSON 已导出');
+    });
+
+    el('dateChip').textContent=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'}).format(new Date());
+    render();
+  </script>
+</body>
+</html>

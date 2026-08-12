@@ -1,0 +1,320 @@
+[
+  {
+    "id": "2026-08-12-coinbase-business-ai-agent-checkout",
+    "demo": false,
+    "title": "Coinbase Business Checkout 开始接受 AI Agent 发起的加密支付",
+    "summary": "Coinbase Business 官方博客宣布，商户可使用现有 Checkout 接受 AI Agent 支付，同时新增可复用支付链接、灵活定价、产品目录和买家信息能力。",
+    "decision": "include",
+    "confidence": 95,
+    "relevance_level": "P0",
+    "signal_type": "competitor",
+    "content_type": "official_release",
+    "information_type": "product_capability",
+    "evidence_level": "confirmed",
+    "source": "Coinbase Business",
+    "url": "https://www.coinbase.com/blog/getting-paid-in-crypto-just-got-a-lot-more-powerful-with-coinbase-business",
+    "published_at": "2026-08-11T00:00:00Z",
+    "primary_tags": [
+      "Agent Checkout",
+      "Crypto Payment"
+    ],
+    "secondary_tags": [
+      "AI Agent",
+      "Payment Link",
+      "Product Catalog",
+      "Merchant Acceptance"
+    ],
+    "why_it_matters_cn": "这不是概念性表态，而是既有商户 Checkout 明确增加 AI Agent 付款入口，代表 Agent 支付开始复用真实商户收款基础设施。",
+    "potential_impact_on_lianlian_cn": "Coinbase 正把加密结算、商户 Checkout 和 Agent 支付合并为统一产品入口，可能争夺跨境数字商户与 AI 原生商户。",
+    "product_opportunity_cn": "立即拆解 Agent 如何发现商品、获得付款参数、传递买家信息、完成授权、支付、退款和对账，并评估连连现有 Checkout/API 的 Agent-ready 扩展。",
+    "competitive_risk_cn": "若 Coinbase 通过现有商户基础和稳定币网络快速扩大 Agent Checkout 覆盖，传统 PSP 可能退化为后端法币通道。",
+    "recommended_action": "alert",
+    "questions_to_validate": [
+      "Agent 使用何种身份和授权凭证？",
+      "支付失败、退款、争议和买家责任如何处理？",
+      "支持哪些资产、网络、地区和商户类型？"
+    ],
+    "follow_up_triggers": [
+      "发布开发者 API 或 Agent SDK",
+      "公布首批 Agent 平台或商户合作方",
+      "扩展法币、本地支付方式或跨境结算"
+    ],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
+      "infrastructure_value": 5,
+      "strategic_value": 5,
+      "source_quality": 5,
+      "lianlian_relevance": 5,
+      "cross_border_value": 4,
+      "merchant_value": 5,
+      "product_actionability": 5,
+      "competitive_impact": 5
+    }
+  },
+  {
+    "id": "2026-08-12-osl-agentpay-stablecoin-infrastructure",
+    "demo": false,
+    "title": "OSL 推出 AgentPay：面向 AI Agent 的多稳定币支付与法币结算层",
+    "summary": "CFOtech Asia 报道 OSL 已推出 AgentPay，开发者可通过 API 提交金额、资产和收款方，由平台处理路由、签名与结算；产品支持 USDT、USDC、USDGO 以及 x402、AP2、MPP，并计划接入 Banxa 法币出入金。",
+    "decision": "include",
+    "confidence": 88,
+    "relevance_level": "P0",
+    "signal_type": "core",
+    "content_type": "media_report",
+    "information_type": "product_capability",
+    "evidence_level": "reported",
+    "source": "CFOtech Asia",
+    "url": "https://cfotech.asia/story/osl-launches-agentpay-for-ai-agent-stablecoin-payments",
+    "published_at": "2026-08-10T00:00:00Z",
+    "related_sources": [
+      "https://www.mpaypass.com.cn/news/202608/11105501.html"
+    ],
+    "primary_tags": [
+      "Agentic Payment",
+      "Stablecoin Settlement"
+    ],
+    "secondary_tags": [
+      "OSL",
+      "x402",
+      "AP2",
+      "MPP",
+      "Fiat On/Off Ramp"
+    ],
+    "why_it_matters_cn": "AgentPay 试图把协议层授权与真实价值结算连接起来，并用单一 API 抽象多稳定币、钱包、链和法币转换，是较完整的 Agent 支付基础设施形态。",
+    "potential_impact_on_lianlian_cn": "OSL 的亚洲开发者定位、多协议兼容和 Banxa 法币桥接与连连的跨境资金、商户及合规能力高度相邻。",
+    "product_opportunity_cn": "建议快速进行产品和技术拆解，并评估以连连多币种账户、全球收付、FX、合规为基础的 Agent Settlement API 或合作接入。",
+    "competitive_risk_cn": "若 OSL 先形成协议聚合层并绑定开发者，支付机构可能只能提供底层法币出入金而失去 Agent 入口。",
+    "recommended_action": "alert",
+    "questions_to_validate": [
+      "是否已有公开 API 文档和生产客户？",
+      "路由、签名、钱包托管和合规责任如何分工？",
+      "Banxa 法币转换覆盖哪些国家、币种和牌照实体？"
+    ],
+    "follow_up_triggers": [
+      "OSL 官方发布 API 文档",
+      "披露开发者、Agent 平台或企业客户",
+      "出现真实交易量、定价和 SLA"
+    ],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
+      "infrastructure_value": 5,
+      "strategic_value": 5,
+      "source_quality": 3,
+      "lianlian_relevance": 5,
+      "cross_border_value": 5,
+      "merchant_value": 4,
+      "product_actionability": 5,
+      "competitive_impact": 5
+    }
+  },
+  {
+    "id": "2026-08-12-x402-v2-22-multinetwork-release",
+    "demo": false,
+    "title": "x402 发布 v2.22 系列包，覆盖 Next、MCP 与多网络适配",
+    "summary": "x402 Foundation 在同一版本批次发布 @x402/next、@x402/mcp、XRPL、TVM、Stellar、Near、Keeta、SVM 和 Paywall 等包；官方 Release 页面确认 @x402/next v2.22.0 已发布到 npm。",
+    "decision": "include",
+    "confidence": 96,
+    "relevance_level": "P1",
+    "signal_type": "core",
+    "content_type": "technical_update",
+    "information_type": "developer_ecosystem",
+    "evidence_level": "confirmed",
+    "source": "x402 Foundation GitHub",
+    "url": "https://github.com/x402-foundation/x402/releases/tag/npm-%40x402%2Fnext%40v2.22.0",
+    "published_at": "2026-08-11T21:57:35Z",
+    "primary_tags": [
+      "x402",
+      "Payment Protocol"
+    ],
+    "secondary_tags": [
+      "MCP",
+      "Next.js",
+      "XRPL",
+      "Stellar",
+      "Near",
+      "SVM"
+    ],
+    "why_it_matters_cn": "同步发布 Web 框架、MCP、Paywall 和多网络包，说明 x402 正把机器支付从核心协议扩展为可直接集成的开发者工具链。",
+    "potential_impact_on_lianlian_cn": "协议生态的开发便利性正在提高，连连若未来提供 Facilitator、结算或法币桥接，需要跟上版本和网络矩阵。",
+    "product_opportunity_cn": "建立 v2.22 兼容测试，重点验证 MCP 工具、Next.js Paywall、网络适配和 Facilitator 接口。",
+    "competitive_risk_cn": "多网络 SDK 越成熟，稳定币原生支付服务商越容易先占据 Agent 开发者入口。",
+    "recommended_action": "investigate",
+    "questions_to_validate": [
+      "v2.22 的破坏性变更和新增接口是什么？",
+      "不同网络包的结算、退款和风控能力是否一致？"
+    ],
+    "follow_up_triggers": [
+      "发布完整 Changelog",
+      "头部平台或 PSP 宣布采用 v2.22",
+      "出现新的 Facilitator 或法币结算接入"
+    ],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
+      "infrastructure_value": 4,
+      "strategic_value": 4,
+      "source_quality": 5,
+      "lianlian_relevance": 4,
+      "cross_border_value": 3,
+      "merchant_value": 3,
+      "product_actionability": 4,
+      "competitive_impact": 4
+    }
+  },
+  {
+    "id": "2026-08-12-airwallex-emfi-ai-era",
+    "demo": false,
+    "title": "Airwallex 将支付与嵌入式金融定义为 AI 时代平台的核心护城河",
+    "summary": "Airwallex 官方文章提出，AI 会压缩软件功能差异，平台竞争将转向资金收取、路由、持有、换汇、对账和全球付款能力；其 Connected Accounts 支持程序化开户、自动分账、多币种余额、FX 和全球 Payout。",
+    "decision": "watchlist",
+    "confidence": 92,
+    "relevance_level": "P2",
+    "signal_type": "competitor",
+    "content_type": "executive_statement",
+    "information_type": "company_strategy",
+    "evidence_level": "primary_statement",
+    "source": "Airwallex Global Blog",
+    "url": "https://www.airwallex.com/global/blog/payments-and-emfi",
+    "published_at": "2026-08-11T00:00:00Z",
+    "primary_tags": [
+      "Embedded Finance",
+      "Platform Payments"
+    ],
+    "secondary_tags": [
+      "Connected Accounts",
+      "FX",
+      "Payout",
+      "AI Era"
+    ],
+    "why_it_matters_cn": "文章没有发布 Agent 支付产品，但清晰揭示了 Airwallex 在 AI 时代争夺平台资金编排层的产品叙事和现有能力组合。",
+    "potential_impact_on_lianlian_cn": "其 Connected Accounts、PSP-agnostic 路由、多币种资金和全球 Payout 与连连平台型客户方案直接可比。",
+    "product_opportunity_cn": "对比双方平台账户、分账、FX、Payout、对账和嵌入式组件能力，并把 Agent 场景纳入平台支付产品路线。",
+    "competitive_risk_cn": "Airwallex 可能借 AI 平台增长强化其全球资金操作系统定位，而不仅是支付网关。",
+    "recommended_action": "discuss",
+    "questions_to_validate": [
+      "Connected Accounts 在不同司法辖区的账户归属和牌照边界是什么？",
+      "是否已有 AI 平台或 Agent 客户案例？"
+    ],
+    "follow_up_triggers": [
+      "发布 AgentOS 支付场景",
+      "披露 AI 平台客户",
+      "推出 Agent-facing API 或自动化资金策略"
+    ],
+    "scores": {
+      "agentic_relevance": 2,
+      "payment_relevance": 5,
+      "infrastructure_value": 5,
+      "strategic_value": 4,
+      "source_quality": 5,
+      "lianlian_relevance": 5,
+      "cross_border_value": 5,
+      "merchant_value": 4,
+      "product_actionability": 4,
+      "competitive_impact": 5
+    }
+  },
+  {
+    "id": "2026-08-12-mas-agentic-ai-risk-guidance",
+    "demo": false,
+    "title": "媒体称新加坡金管局拟将 Agentic AI 纳入金融业 AI 风险管理指南",
+    "summary": "未央网援引外媒称，MAS 即将敲定覆盖 Agentic AI 的金融业人工智能风险管理指南。目前尚未取得正式监管文件，因此仅作为监管前置信号。",
+    "decision": "watchlist",
+    "confidence": 70,
+    "relevance_level": "P2",
+    "signal_type": "regulation",
+    "content_type": "media_report",
+    "information_type": "regulation_compliance",
+    "evidence_level": "reported",
+    "source": "未央网",
+    "url": "https://www.weiyangx.com/474500.html",
+    "published_at": "2026-08-11T01:21:47Z",
+    "primary_tags": [
+      "Agentic AI Governance",
+      "Financial Regulation"
+    ],
+    "secondary_tags": [
+      "MAS",
+      "Risk Management",
+      "Accountability"
+    ],
+    "why_it_matters_cn": "金融监管开始单独关注具备自主行动能力的 Agent，未来支付授权、责任归属、人工介入和审计要求可能被纳入 AI 风险框架。",
+    "potential_impact_on_lianlian_cn": "连连在新加坡及跨境业务中的 Agent 产品设计可能需要额外治理、日志、权限和人工接管机制。",
+    "product_opportunity_cn": "提前建立 Agent 支付治理清单，包括权限范围、金额限制、可解释日志、异常暂停、人工复核和责任追踪。",
+    "competitive_risk_cn": "若监管要求提前落地，缺乏 Agent 治理控制面的产品可能无法进入持牌金融机构场景。",
+    "recommended_action": "monitor",
+    "questions_to_validate": [
+      "MAS 正式文件的适用机构和发布时间是什么？",
+      "是否明确涉及支付、交易执行或客户授权？"
+    ],
+    "follow_up_triggers": [
+      "MAS 发布正式指南或咨询文件",
+      "出现支付机构适用条款",
+      "明确 Agent 行为责任和人工监督要求"
+    ],
+    "scores": {
+      "agentic_relevance": 4,
+      "payment_relevance": 2,
+      "infrastructure_value": 3,
+      "strategic_value": 4,
+      "source_quality": 2,
+      "lianlian_relevance": 4,
+      "cross_border_value": 3,
+      "merchant_value": 2,
+      "product_actionability": 4,
+      "competitive_impact": 2
+    }
+  },
+  {
+    "id": "2026-08-12-mbridge-600bn-crossborder-cbdc",
+    "demo": false,
+    "title": "mBridge 累计交易额据称突破 6000 亿元，跨境 CBDC 进入规模验证阶段",
+    "summary": "未央网专栏称 mBridge 累计交易额突破 6000 亿元，并讨论其从实验走向生产的效率、成本与穿透监管价值；该数字尚未由本轮采集中的央行或 BIS 一手材料交叉确认。",
+    "decision": "watchlist",
+    "confidence": 68,
+    "relevance_level": "P2",
+    "signal_type": "strategic_radar",
+    "content_type": "analysis",
+    "information_type": "research_insight",
+    "evidence_level": "reported",
+    "source": "未央网",
+    "url": "https://www.weiyangx.com/474330.html",
+    "published_at": "2026-08-11T01:23:39Z",
+    "primary_tags": [
+      "Cross-border Settlement",
+      "CBDC"
+    ],
+    "secondary_tags": [
+      "mBridge",
+      "Digital RMB",
+      "Payment Infrastructure"
+    ],
+    "why_it_matters_cn": "即使与 Agent 支付无直接关系，跨境 CBDC 若进入规模使用，可能成为未来自动化跨境资金流的受监管结算轨道。",
+    "potential_impact_on_lianlian_cn": "mBridge 与连连的跨境收付、银行连接、FX 和合规路径高度相关，应与稳定币和 Tokenized Deposits 并列观察。",
+    "product_opportunity_cn": "评估数字人民币与 mBridge 在企业跨境付款、商户结算、资金归集和可编程支付中的接口机会。",
+    "competitive_risk_cn": "央行数字货币基础设施若直接连接银行和大型企业，可能改变部分跨境支付机构的路由与结算角色。",
+    "recommended_action": "monitor",
+    "questions_to_validate": [
+      "6000 亿元统计口径、时间范围和官方出处是什么？",
+      "当前生产参与机构、币种和场景有哪些？"
+    ],
+    "follow_up_triggers": [
+      "央行、BIS 或参与银行确认交易规模",
+      "新增国家、商业银行或生产场景",
+      "开放企业或 PSP 接口"
+    ],
+    "scores": {
+      "agentic_relevance": 1,
+      "payment_relevance": 5,
+      "infrastructure_value": 5,
+      "strategic_value": 4,
+      "source_quality": 2,
+      "lianlian_relevance": 5,
+      "cross_border_value": 5,
+      "merchant_value": 2,
+      "product_actionability": 3,
+      "competitive_impact": 3
+    }
+  }
+]
