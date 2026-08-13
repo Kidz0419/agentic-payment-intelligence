@@ -100,6 +100,19 @@
     .page-head h2 { margin: 9px 0 0; font-size: clamp(30px, 3.4vw, 42px); line-height: 1.08; letter-spacing: -1.1px; }
     .page-subtitle { margin: 10px 0 0; color: var(--muted); max-width: 760px; font-size: 15px; }
     .date-chip { color: var(--quiet); font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .day-bar { display: none; align-items: center; gap: 10px; margin: -8px 0 24px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); }
+    .day-bar.open { display: flex; }
+    .day-bar label { color: var(--muted); font-size: 12px; }
+    .day-picker { height: 34px; min-width: 170px; border: 1px solid var(--line); border-radius: 5px; background: white; padding: 0 10px; }
+    .day-note { margin-left: auto; color: var(--quiet); font-size: 11px; }
+    .feishu-view { display: none; max-width: 820px; }
+    .feishu-view.open { display: block; }
+    .feishu-actions { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+    .feishu-card { border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: rgba(0,0,0,.04) 0 4px 18px; overflow: hidden; }
+    .feishu-card-head { padding: 18px 22px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+    .feishu-card-head small { color: var(--quiet); font: 600 10px ui-monospace, monospace; letter-spacing: .08em; }
+    .feishu-card-head h3 { margin: 5px 0 0; font-size: 20px; }
+    .feishu-copy { margin: 0; padding: 24px; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.75 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); }
 
     .summary-strip {
       display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -233,6 +246,8 @@
       </div>
       <nav aria-label="知识库视图">
         <button class="nav-btn active" data-view="today"><span>今日信号</span><span class="nav-count" id="todayCount">0</span></button>
+        <button class="nav-btn" data-view="daily"><span>按日查看</span><span class="nav-count" id="dayCount">0</span></button>
+        <button class="nav-btn" data-view="feishu"><span>飞书简报</span><span class="nav-count">复制</span></button>
         <button class="nav-btn" data-view="library"><span>全部知识库</span><span class="nav-count" id="allCount">0</span></button>
         <button class="nav-btn" data-view="watchlist"><span>战略雷达</span><span class="nav-count" id="watchCount">0</span></button>
         <button class="nav-btn" data-view="competitor"><span>竞争动态</span><span class="nav-count" id="competitorCount">0</span></button>
@@ -269,6 +284,12 @@
               <p class="page-subtitle" id="pageSubtitle">Core Signal 保持高精度；Strategic Radar 捕捉可能改变支付入口、授权、商户关系和跨境结算的前置信号。</p>
             </div>
             <div class="date-chip" id="dateChip"></div>
+          </div>
+
+          <div class="day-bar" id="dayBar">
+            <label for="dayPicker">日报日期</label>
+            <select class="day-picker" id="dayPicker" aria-label="选择日报日期"></select>
+            <span class="day-note" id="dayNote"></span>
           </div>
 
           <div class="summary-strip" aria-label="信号统计">
@@ -318,7 +339,21 @@
 
           <div class="results-head"><span id="resultCount">0 条信号</span><span>按优先级与行动价值排序</span></div>
           <div class="signal-list" id="signalList"></div>
-          <div class="empty" id="empty"><strong>没有匹配的信号</strong>尝试修改搜索词或筛选条件。</div>
+          <div class="empty" id="empty"><strong>没有匹配的信号</strong>该日可能是静默日，或当前筛选条件没有结果。</div>
+        </section>
+
+        <section class="feishu-view" id="feishuView">
+          <div class="page-head">
+            <div><div class="eyebrow">Feishu-ready brief</div><h2>飞书群简报</h2><p class="page-subtitle">短、直接、保留证据边界。选择日期后可一键复制到飞书群。</p></div>
+          </div>
+          <div class="feishu-actions">
+            <select class="day-picker" id="feishuDayPicker" aria-label="选择飞书简报日期"></select>
+            <button class="btn primary" id="copyFeishuBtn">复制飞书简报</button>
+          </div>
+          <div class="feishu-card">
+            <div class="feishu-card-head"><small>READY TO SEND</small><h3 id="feishuTitle">Agentic Payment 日报</h3></div>
+            <pre class="feishu-copy" id="feishuCopy"></pre>
+          </div>
         </section>
 
         <section class="methodology" id="methodology">
@@ -352,6 +387,7 @@
   </aside>
   <div class="toast" id="toast"></div>
 
+  <script src="data/history.js"></script>
   <script src="data/latest.js"></script>
   <script>
     const demoSignals = [
@@ -447,15 +483,21 @@
       }
     ];
 
+    const history = window.DAILY_HISTORY && Array.isArray(window.DAILY_HISTORY.days) ? window.DAILY_HISTORY : {days:[],signals:[]};
+    const dailySignals = Array.isArray(window.DAILY_SIGNALS) ? window.DAILY_SIGNALS : [];
+    const historicalSignals = Array.isArray(history.signals) ? history.signals : dailySignals;
+    const latestDate = history.latest_date || new Date().toISOString().slice(0,10);
     const state = {
-      view: "today", priority: "all", content: "all", information: "all", action: "all", query: "",
+      view: "today", selectedDay: latestDate, priority: "all", content: "all", information: "all", action: "all", query: "",
       selected: null, saved: new Set(JSON.parse(localStorage.getItem("apkb-saved") || "[]")),
       imported: JSON.parse(localStorage.getItem("apkb-imported") || "[]")
     };
 
     const el = id => document.getElementById(id);
-    const dailySignals = Array.isArray(window.DAILY_SIGNALS) ? window.DAILY_SIGNALS : [];
-    const allSignals = () => [...state.imported, ...dailySignals, ...demoSignals];
+    const uniqueById = rows => [...new Map(rows.map(x=>[x.id,x])).values()];
+    const allSignals = () => uniqueById([...state.imported, ...historicalSignals, ...demoSignals]);
+    const dayDefinition = date => history.days.find(d=>d.date===date) || {date,signal_ids:[],counts:{total:0,P0:0,P1:0,P2:0}};
+    const rowsForDay = date => { const ids=new Set(dayDefinition(date).signal_ids||[]); return historicalSignals.filter(s=>ids.has(s.id)); };
     const priorityRank = {P0:0,P1:1,P2:2,P3:3};
     const actionLabel = {alert:"立即关注",investigate:"调研",discuss:"讨论",monitor:"持续观察",archive:"归档"};
     const contentLabel = {official_release:"官方发布",technical_update:"技术更新",executive_statement:"高管发言",media_report:"媒体报道",analysis:"深度分析",opinion:"观点",regulatory:"监管"};
@@ -477,7 +519,8 @@
     }
     function visibleSignals() {
       let rows = allSignals();
-      if (state.view === "today") rows = rows.filter(s => dailySignals.some(d => d.id === s.id));
+      if (state.view === "today") rows = rowsForDay(latestDate);
+      if (state.view === "daily") rows = rowsForDay(state.selectedDay);
       if (state.view === "watchlist") rows = rows.filter(s => s.signal_type === "strategic_radar" || s.decision === "watchlist");
       if (state.view === "competitor") rows = rows.filter(s => s.signal_type === "competitor");
       if (state.view === "saved") rows = rows.filter(s => state.saved.has(s.id));
@@ -520,7 +563,8 @@
     function updateCounts() {
       const rows = allSignals();
       el("allCount").textContent = rows.length;
-      el("todayCount").textContent = dailySignals.length;
+      el("todayCount").textContent = rowsForDay(latestDate).length;
+      el("dayCount").textContent = history.days.length;
       el("watchCount").textContent = rows.filter(s=>s.signal_type==='strategic_radar'||s.decision==='watchlist').length;
       el("competitorCount").textContent = rows.filter(s=>s.signal_type==='competitor').length;
       el("savedCount").textContent = state.saved.size;
@@ -553,16 +597,54 @@
     function closeDetail(){ el("detail").classList.remove("open"); el("detailBackdrop").classList.remove("open"); el("detail").setAttribute("aria-hidden","true"); state.selected=null; render(); }
     function toast(msg){ el("toast").textContent=msg; el("toast").classList.add("show"); setTimeout(()=>el("toast").classList.remove("show"),1800); }
 
+    function formatReportDate(date) {
+      const d=new Date(`${date}T00:00:00+08:00`);
+      return new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short',timeZone:'Asia/Shanghai'}).format(d);
+    }
+    function feishuBrief(date) {
+      const rows=rowsForDay(date).sort((a,b)=>(priorityRank[a.relevance_level]??9)-(priorityRank[b.relevance_level]??9));
+      if(!rows.length) return `Agentic Payment 日报｜${date}\n\n今日无新增高价值信号。\n\n判断：没有为了凑数收录弱相关内容。继续监控 Agent 支付产品、授权协议、商户入口和跨境结算变化。\n\n知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
+      const p0=rows.filter(x=>x.relevance_level==='P0').length, p1=rows.filter(x=>x.relevance_level==='P1').length, p2=rows.filter(x=>x.relevance_level==='P2').length;
+      const lead=p0 ? `今天有 ${p0} 条需要立即关注的信号。` : `今天没有 P0，重点是 ${p1} 条 P1 和 ${p2} 条 P2。`;
+      const items=rows.map((s,i)=>`${i+1}. [${s.relevance_level}] ${s.title}\n${s.summary}\n连连判断：${s.potential_impact_on_lianlian_cn}\n建议：${actionLabel[s.recommended_action]||s.recommended_action}\n来源：${s.url}`).join('\n\n');
+      const uncertain=rows.filter(x=>!['confirmed','primary_statement'].includes(x.evidence_level));
+      const boundary=uncertain.length ? `\n\n证据边界：${uncertain.map(x=>`${x.source}为${evidenceLabel[x.evidence_level]||x.evidence_level}`).join('；')}，相关结论仍需一手材料确认。` : '';
+      return `Agentic Payment 日报｜${date}\n\n一句话结论：${lead}\n\n重点信号\n${items}${boundary}\n\n完整知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
+    }
+    function renderFeishu(date=state.selectedDay) {
+      state.selectedDay=date;
+      el('feishuDayPicker').value=date;
+      el('feishuTitle').textContent=`Agentic Payment 日报｜${date}`;
+      el('feishuCopy').textContent=feishuBrief(date);
+    }
+    function setSelectedDay(date) {
+      state.selectedDay=date;
+      el('dayPicker').value=date; el('feishuDayPicker').value=date;
+      const day=dayDefinition(date); el('dayNote').textContent=`${day.counts?.total||0} 条 · P0 ${day.counts?.P0||0} · P1 ${day.counts?.P1||0} · P2 ${day.counts?.P2||0}`;
+      el('dateChip').textContent=formatReportDate(date);
+      renderFeishu(date); if(state.view==='daily') render();
+    }
+
     function switchView(view) {
       state.view=view; closeDetail();
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
-      const method=view==='method'; el('signalsView').style.display=method?'none':'block'; el('methodology').classList.toggle('open',method);
-      const titles={today:['Daily intelligence','今日 Agentic Payment 信号','Core Signal 保持高精度；Strategic Radar 捕捉可能改变支付入口、授权、商户关系和跨境结算的前置信号。'],library:['Knowledge base','全部知识库','跨来源、跨时间沉淀的事件、协议、公司、人物与研究议题。'],watchlist:['Strategic radar','战略雷达','支付尚未发生，但可能改变 Agent Commerce 入口、身份、跨境资金流和竞争格局。'],competitor:['Competitive intelligence','竞争动态','跟踪卡组织、PSP、AI 平台与基础设施公司的 Agentic Payment 布局。'],saved:['Saved intelligence','已收藏','你标记为后续调研、讨论或持续跟踪的信号。']};
-      if(!method){ const t=titles[view]||titles.library; el('eyebrow').textContent=t[0]; el('pageTitle').textContent=t[1]; el('pageSubtitle').textContent=t[2]; render(); }
+      const method=view==='method', feishu=view==='feishu';
+      el('signalsView').style.display=(method||feishu)?'none':'block';
+      el('methodology').classList.toggle('open',method); el('feishuView').classList.toggle('open',feishu);
+      el('dayBar').classList.toggle('open',view==='daily');
+      const titles={today:['Daily intelligence','今日 Agentic Payment 信号','本期最新日报；Core Signal 保持高精度，Strategic Radar 捕捉前置信号。'],daily:['Daily archive','按日查看日报','按日报运行日期查看每日增量；同一事件跨日只保留一次。'],library:['Knowledge base','全部知识库','跨来源、跨时间沉淀的事件、协议、公司、人物与研究议题。'],watchlist:['Strategic radar','战略雷达','支付尚未发生，但可能改变 Agent Commerce 入口、身份、跨境资金流和竞争格局。'],competitor:['Competitive intelligence','竞争动态','跟踪卡组织、PSP、AI 平台与基础设施公司的 Agentic Payment 布局。'],saved:['Saved intelligence','已收藏','你标记为后续调研、讨论或持续跟踪的信号。']};
+      if(!method&&!feishu){ const t=titles[view]||titles.library; el('eyebrow').textContent=t[0]; el('pageTitle').textContent=t[1]; el('pageSubtitle').textContent=t[2]; el('dateChip').textContent=formatReportDate(view==='daily'?state.selectedDay:latestDate); render(); }
+      if(feishu) renderFeishu(state.selectedDay);
       el('sidebar').classList.remove('open');
     }
 
     document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+    el('dayPicker').addEventListener('change',e=>setSelectedDay(e.target.value));
+    el('feishuDayPicker').addEventListener('change',e=>setSelectedDay(e.target.value));
+    el('copyFeishuBtn').addEventListener('click',async()=>{
+      try { await navigator.clipboard.writeText(el('feishuCopy').textContent); toast('飞书简报已复制'); }
+      catch (_) { const range=document.createRange(); range.selectNodeContents(el('feishuCopy')); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(range); toast('已选中简报，请复制'); }
+    });
     document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.priority=b.dataset.priority;render();}));
     el('contentFilter').addEventListener('change',e=>{state.content=e.target.value;render();});
     el('informationFilter').addEventListener('change',e=>{state.information=e.target.value;render();});
@@ -588,7 +670,9 @@
       const blob=new Blob([JSON.stringify(allSignals(),null,2)],{type:'application/json'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='agentic-payment-knowledge-base.json';a.click();URL.revokeObjectURL(a.href);toast('知识库 JSON 已导出');
     });
 
-    el('dateChip').textContent=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'}).format(new Date());
+    const dayOptions=history.days.map(d=>`<option value="${escapeHtml(d.date)}">${escapeHtml(d.date)} · ${d.counts?.total||0} 条</option>`).join('');
+    el('dayPicker').innerHTML=dayOptions; el('feishuDayPicker').innerHTML=dayOptions;
+    setSelectedDay(latestDate);
     render();
   </script>
 </body>

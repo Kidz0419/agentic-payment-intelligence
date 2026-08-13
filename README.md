@@ -1,12 +1,54 @@
-# Agentic Payment Intelligence
+# Agentic Payment Intelligence Knowledge Base
 
-A public, static knowledge-base view of daily Agentic Payment signals.
+面向连连支付创新产品团队的 Agentic Payment 网页知识库 MVP。
 
-## Scope
+## 文件
 
-- Agentic Payment Core Signals
-- LianLian Strategic Radar
-- Product, protocol, regulatory, and competitive developments
-- Evidence level and source links
+- `index.html`：可直接打开的网页版知识库
+- `FILTER_RULES_V4.md`：正式合并版筛选规范
 
-The public site contains only curated display records. Collection candidates, local logs, internal scripts, and private notes are not published.
+## 当前 MVP 能力
+
+- 今日信号、全部知识库、战略雷达、竞争动态、收藏和筛选方法视图
+- 全文搜索
+- P0/P1/P2 优先级筛选
+- 内容类型、信息类型与建议行动筛选
+- Signal Type / Content Type / Information Type 三层分类
+- 信号详情、十项评分、连连影响、产品机会、竞争风险
+- 待验证问题与后续触发器
+- 收藏状态保存在浏览器 `localStorage`
+- 导入 JSON / JSONL
+- 导出完整知识库 JSON
+- 响应式桌面和移动端布局
+- Notion 风格的温暖中性色、轻边框、数据库列表和文档式详情
+
+## 演示数据说明
+
+页面内置记录均标记为 `DEMO`，用于验证知识结构和交互，不应作为“今日新发布”的事实。正式运行时通过“导入信号”载入筛选流程产出的 V4 JSON。
+
+## 本地运行
+
+直接双击 `index.html` 即可，或在目录中启动静态服务器：
+
+```bash
+python3 -m http.server 8765
+```
+
+然后访问：
+
+```text
+http://127.0.0.1:8765/
+```
+
+## 正式产品化建议
+
+当前是无后端的单文件 MVP。下一阶段建议增加：
+
+1. 数据库与用户登录
+2. 每日采集、筛选和入库任务
+3. 事件级去重与来源关联
+4. 人物、公司、协议和主题实体页
+5. 内部备注、负责人和状态流转
+6. P0 实时告警与日报/周报视图
+7. 历史评分和状态变化记录
+8. 团队权限、审计和部署
