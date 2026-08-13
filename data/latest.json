@@ -1,11 +1,11 @@
 [
   {
-    "id": "x402-pr-3094-svm-upto-payment-flow",
-    "event_key": "github:x402-foundation/x402:pr:3094",
-    "event_id": "PR-3094",
+    "id": "x402-20260812-payment-flows-svm-security-batch",
+    "event_key": "x402:engineering-batch:payment-flows-svm-security:2026-08-12",
+    "event_id": "PR-3094+PR-3115+PR-3132",
     "demo": false,
-    "title": "x402 合并 PR #3094：SVM `upto` 支付流支持按实际用量结算",
-    "summary": "x402 Foundation 已合并 PR #3094，将 SVM `upto` 方案对齐新版 payment-flow 模型；测试显示客户端可预先托管最高金额，由服务端按实际用量结算，面向 Agent/API 的按量付费能力进一步落到 Solana 工具链。",
+    "title": "x402 同步推进按量支付、Go Payment Flows 与 SVM 安全校验",
+    "summary": "x402 Foundation 同日合并三项相关工程更新：SVM `upto` 支持先锁定预算上限、再按实际用量结算；Go SDK 接入 payment flows；SVM exact 补齐 TransferChecked 指令 discriminator 校验。三项合并反映协议正在同时补齐计费表达、后端覆盖和交易安全。",
     "decision": "include",
     "confidence": 97,
     "relevance_level": "P1",
@@ -16,162 +16,38 @@
     "source": "x402 Foundation GitHub",
     "url": "https://github.com/x402-foundation/x402/pull/3094",
     "canonical_url": "https://github.com/x402-foundation/x402/pull/3094",
-    "published_at": "2026-08-12T18:38:00Z",
+    "published_at": "2026-08-12T22:50:58Z",
     "primary_tags": [
       "x402",
       "Usage-based Billing"
     ],
     "secondary_tags": [
-      "SVM",
-      "Solana",
       "Payment Flow",
-      "Escrow"
-    ],
-    "why_it_matters_cn": "`upto` 让调用方先锁定预算上限、服务方再按实际消耗结算，直接对应 Agent 调用 API 时的预算控制和可变金额支付。",
-    "potential_impact_on_lianlian_cn": "如果按量支付原语先在链上协议成熟，Agent 开发者可能优先采用稳定币原生计费，连连需要补足法币账户、商户结算和合规桥接。",
-    "product_opportunity_cn": "建立 x402 `upto` PoC，把预算上限、分段计量、最终结算、退款及对账映射到连连账户与跨境结算能力。",
-    "competitive_risk_cn": "协议与 SDK 直接提供按量托管和结算后，传统 PSP 若只提供单次收款接口，可能失去 Agent API 计费入口。",
-    "recommended_action": "investigate",
-    "questions_to_validate": [
-      "资金锁定、超时释放和争议处理的完整状态机是什么？",
-      "SVM `upto` 是否支持生产网、退款与多币种？"
-    ],
-    "follow_up_triggers": [
-      "正式版本发布并包含 SVM `upto`",
-      "出现生产 Facilitator 或 API 商户采用",
-      "新增法币或跨境结算桥接"
-    ],
-    "related_sources": [
-      "https://github.com/x402-foundation/x402/commit/79b62597aed18154649c961044b5033f24c80169",
-      "https://github.com/x402-foundation/x402/pull/3135"
-    ],
-    "scores": {
-      "agentic_relevance": 5,
-      "payment_relevance": 5,
-      "infrastructure_value": 5,
-      "strategic_value": 4,
-      "source_quality": 5,
-      "lianlian_relevance": 4,
-      "cross_border_value": 3,
-      "merchant_value": 4,
-      "product_actionability": 5,
-      "competitive_impact": 4
-    },
-    "report_date": "2026-08-13",
-    "event_date": "2026-08-12",
-    "first_seen_date": "2026-08-13",
-    "last_seen_date": "2026-08-13",
-    "run_dates": [
-      "2026-08-13"
-    ]
-  },
-  {
-    "id": "x402-pr-3115-go-payment-flows",
-    "event_key": "github:x402-foundation/x402:pr:3115",
-    "event_id": "PR-3115",
-    "demo": false,
-    "title": "x402 合并 PR #3115：Go SDK 接入 payment flows",
-    "summary": "x402 Foundation 已合并 PR #3115，把 TypeScript 中引入的 payment flows 移植到 Go SDK，并为 SVM `upto` 补齐底层能力；这使 Go 服务端也能采用分阶段、可扩展的机器支付流程。",
-    "decision": "include",
-    "confidence": 96,
-    "relevance_level": "P1",
-    "signal_type": "core",
-    "content_type": "technical_update",
-    "information_type": "developer_ecosystem",
-    "evidence_level": "confirmed",
-    "source": "x402 Foundation GitHub",
-    "url": "https://github.com/x402-foundation/x402/pull/3115",
-    "canonical_url": "https://github.com/x402-foundation/x402/pull/3115",
-    "published_at": "2026-08-12T22:50:58Z",
-    "primary_tags": [
-      "x402",
-      "Payment Flow"
-    ],
-    "secondary_tags": [
       "Go SDK",
       "SVM",
-      "Developer Ecosystem"
-    ],
-    "why_it_matters_cn": "Go 是支付后端常用技术栈；payment flows 进入 Go SDK，降低 Facilitator、商户服务和结算后端采用 x402 的集成门槛。",
-    "potential_impact_on_lianlian_cn": "连连若评估 x402 Facilitator 或企业 API 计费，可直接在 Go 服务栈验证，而不必依赖 TypeScript 侧车。",
-    "product_opportunity_cn": "以 Go SDK 搭建 Facilitator 兼容层，验证支付请求、授权、分阶段结算、幂等和对账事件。",
-    "competitive_risk_cn": "跨语言 SDK 覆盖扩大将加速协议进入真实后端，压缩支付机构观望和自建接口标准的时间窗口。",
-    "recommended_action": "investigate",
-    "questions_to_validate": [
-      "Go 与 TypeScript payment-flow 状态机是否完全一致？",
-      "错误恢复、幂等和观测事件能否满足支付生产要求？"
-    ],
-    "follow_up_triggers": [
-      "Go SDK 正式版本发布",
-      "SVM `upto` 在 Go 中完成支持",
-      "Facilitator 公布 Go 生产案例"
-    ],
-    "related_sources": [
-      "https://github.com/x402-foundation/x402/commit/f62a9facb1c7755c4bfbccb21bbb90ab9e70f787"
-    ],
-    "scores": {
-      "agentic_relevance": 5,
-      "payment_relevance": 5,
-      "infrastructure_value": 4,
-      "strategic_value": 4,
-      "source_quality": 5,
-      "lianlian_relevance": 4,
-      "cross_border_value": 3,
-      "merchant_value": 3,
-      "product_actionability": 5,
-      "competitive_impact": 4
-    },
-    "report_date": "2026-08-13",
-    "event_date": "2026-08-12",
-    "first_seen_date": "2026-08-13",
-    "last_seen_date": "2026-08-13",
-    "run_dates": [
-      "2026-08-13"
-    ]
-  },
-  {
-    "id": "x402-pr-3132-svm-transferchecked-validation",
-    "event_key": "github:x402-foundation/x402:pr:3132",
-    "event_id": "PR-3132",
-    "demo": false,
-    "title": "x402 合并 PR #3132：修补 SVM exact 转账指令校验缺口",
-    "summary": "x402 Foundation 已合并 PR #3132：TypeScript SVM exact 静态路径此前校验 token program，却未校验指令 discriminator；修复新增 `data[0] === 12` 检查，使其与 Python、Go 和 smart-wallet 路径一致。",
-    "decision": "include",
-    "confidence": 98,
-    "relevance_level": "P1",
-    "signal_type": "core",
-    "content_type": "technical_update",
-    "information_type": "developer_ecosystem",
-    "evidence_level": "confirmed",
-    "source": "x402 Foundation GitHub",
-    "url": "https://github.com/x402-foundation/x402/pull/3132",
-    "canonical_url": "https://github.com/x402-foundation/x402/pull/3132",
-    "published_at": "2026-08-12T14:43:54Z",
-    "primary_tags": [
-      "x402",
       "Payment Security"
     ],
-    "secondary_tags": [
-      "SVM",
-      "TransferChecked",
-      "Validation",
-      "TypeScript"
-    ],
-    "why_it_matters_cn": "Agent 自动付款依赖机器可验证的指令语义；仅验证程序地址而不验证具体转账指令会扩大错误或恶意交易被接受的风险。",
-    "potential_impact_on_lianlian_cn": "未来若连连接入 x402/SVM，不能只依赖协议库默认校验，应建立独立的交易意图、金额、资产、收款方和指令类型验证。",
-    "product_opportunity_cn": "把该缺口转化为 Agent 支付安全基线：协议解析双重校验、跨 SDK 一致性测试和高风险交易阻断。",
-    "competitive_risk_cn": "协议快速演进伴随实现差异；未持续跟踪安全修复的 PSP 或 Facilitator 可能承担资金与声誉损失。",
+    "why_it_matters_cn": "三项更新共同指向一个更完整的机器支付闭环：Agent 可设置预算上限，服务端按实际消耗结算，支付后端可用 Go 接入，同时对链上转账指令做更严格验证。",
+    "potential_impact_on_lianlian_cn": "x402 的计费、后端 SDK 和安全控制正在同步成熟。连连若评估 Facilitator、Agent API 计费或稳定币结算，需要用同一套 PoC 覆盖支付状态机、跨语言一致性和交易意图校验。",
+    "product_opportunity_cn": "建立统一 x402 PoC：验证预算锁定、计量、分阶段结算、退款、幂等、对账，以及资产、金额、收款方和指令类型的双重校验，并映射到连连法币账户及跨境结算。",
+    "competitive_risk_cn": "协议与多语言 SDK 若直接提供按量托管、结算和安全校验，传统 PSP 只提供单次收款接口会失去 Agent API 的计费入口。",
     "recommended_action": "investigate",
     "questions_to_validate": [
-      "受影响版本和潜在可利用范围是什么？",
-      "历史交易是否需要回溯，其他网络方案是否存在类似校验差异？"
+      "`upto` 的锁资、超时释放、退款和争议状态机是否完整？",
+      "Go 与 TypeScript 的 payment-flow 状态机和幂等语义是否一致？",
+      "PR #3132 的受影响版本及历史风险范围是什么？"
     ],
     "follow_up_triggers": [
-      "项目发布安全公告或受影响版本说明",
-      "对应修复进入正式版本",
-      "出现漏洞披露或历史利用证据"
+      "正式版本同时包含 SVM `upto` 与 Go payment flows",
+      "出现生产 Facilitator 或 API 商户采用",
+      "项目发布 SVM 校验安全公告或受影响版本说明"
     ],
     "related_sources": [
+      "https://github.com/x402-foundation/x402/pull/3115",
+      "https://github.com/x402-foundation/x402/pull/3132",
+      "https://github.com/x402-foundation/x402/pull/3135",
+      "https://github.com/x402-foundation/x402/commit/79b62597aed18154649c961044b5033f24c80169",
+      "https://github.com/x402-foundation/x402/commit/f62a9facb1c7755c4bfbccb21bbb90ab9e70f787",
       "https://github.com/x402-foundation/x402/commit/16a23d0989bbb674069cc5bd1d481dbce9cc626e"
     ],
     "scores": {
@@ -181,10 +57,10 @@
       "strategic_value": 4,
       "source_quality": 5,
       "lianlian_relevance": 4,
-      "cross_border_value": 2,
+      "cross_border_value": 3,
       "merchant_value": 4,
       "product_actionability": 5,
-      "competitive_impact": 3
+      "competitive_impact": 4
     },
     "report_date": "2026-08-13",
     "event_date": "2026-08-12",
