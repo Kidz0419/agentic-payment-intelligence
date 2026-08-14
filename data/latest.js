@@ -1,54 +1,55 @@
 window.DAILY_SIGNALS = [
   {
-    "id": "x402-20260812-payment-flows-svm-security-batch",
-    "event_key": "x402:engineering-batch:payment-flows-svm-security:2026-08-12",
-    "event_id": "PR-3094+PR-3115+PR-3132",
+    "id": "x402-20260813-spend-controls-siwx-origin-batch",
+    "event_key": "x402:engineering-batch:spend-controls-siwx-origin:2026-08-13",
+    "event_id": "PR-3124+PR-3133+PR-3143+PR-3147",
     "demo": false,
-    "title": "x402 同步推进按量支付、Go Payment Flows 与 SVM 安全校验",
-    "summary": "x402 Foundation 同日合并三项相关工程更新：SVM `upto` 支持先锁定预算上限、再按实际用量结算；Go SDK 接入 payment flows；SVM exact 补齐 TransferChecked 指令 discriminator 校验。三项合并反映协议正在同时补齐计费表达、后端覆盖和交易安全。",
+    "title": "x402 同批落地客户端支出控制与 SIWX 来源绑定",
+    "summary": "x402 Foundation 同日合并两组相互关联的客户端安全更新：TypeScript SDK 新增 spendControls，在签名前校验单笔金额、收款方和资产；SIWX challenge 新增 requestUrl 来源绑定，防止一个站点签发的挑战被转用到另一来源。配套文档 PR #3147 与 #3143 同步合并。",
     "decision": "include",
-    "confidence": 97,
+    "confidence": 98,
     "relevance_level": "P1",
     "signal_type": "core",
     "content_type": "technical_update",
     "information_type": "developer_ecosystem",
     "evidence_level": "confirmed",
     "source": "x402 Foundation GitHub",
-    "url": "https://github.com/x402-foundation/x402/pull/3094",
-    "canonical_url": "https://github.com/x402-foundation/x402/pull/3094",
-    "published_at": "2026-08-12T22:50:58Z",
+    "url": "https://github.com/x402-foundation/x402/pull/3124",
+    "canonical_url": "https://github.com/x402-foundation/x402/pull/3124",
+    "published_at": "2026-08-13T15:37:18Z",
+    "current_evidence": "GitHub 显示 PR #3124、#3133、#3143、#3147 均已于 2026-08-13 合并；功能 PR 与文档 PR 分别成对落地。",
     "primary_tags": [
       "x402",
-      "Usage-based Billing"
+      "Spend Control",
+      "Delegated Authorization"
     ],
     "secondary_tags": [
-      "Payment Flow",
-      "Go SDK",
-      "SVM",
-      "Payment Security"
+      "SIWX",
+      "Origin Binding",
+      "Client Safety",
+      "TypeScript SDK"
     ],
-    "why_it_matters_cn": "三项更新共同指向一个更完整的机器支付闭环：Agent 可设置预算上限，服务端按实际消耗结算，支付后端可用 Go 接入，同时对链上转账指令做更严格验证。",
-    "potential_impact_on_lianlian_cn": "x402 的计费、后端 SDK 和安全控制正在同步成熟。连连若评估 Facilitator、Agent API 计费或稳定币结算，需要用同一套 PoC 覆盖支付状态机、跨语言一致性和交易意图校验。",
-    "product_opportunity_cn": "建立统一 x402 PoC：验证预算锁定、计量、分阶段结算、退款、幂等、对账，以及资产、金额、收款方和指令类型的双重校验，并映射到连连法币账户及跨境结算。",
-    "competitive_risk_cn": "协议与多语言 SDK 若直接提供按量托管、结算和安全校验，传统 PSP 只提供单次收款接口会失去 Agent API 的计费入口。",
+    "why_it_matters_cn": "Agent 自动签名付款时，支付协议开始把预算、收款方、资产和请求来源变成客户端可执行策略，而不是只依赖服务端声明。",
+    "potential_impact_on_lianlian_cn": "连连若提供 Agent 钱包、Facilitator 或付款 API，需要把支出策略和来源绑定纳入授权层，避免 Agent 被诱导向错误收款方、错误资产或跨站 challenge 付款。",
+    "product_opportunity_cn": "设计 Agent Payment Policy API，至少覆盖单笔/累计额度、商户与资产白名单、请求来源绑定、策略版本、拒绝原因和审计日志。",
+    "competitive_risk_cn": "x402 SDK 若把关键授权控制直接做成默认客户端能力，PSP 仅提供结算接口将难以控制 Agent 支付策略入口。",
     "recommended_action": "investigate",
     "questions_to_validate": [
-      "`upto` 的锁资、超时释放、退款和争议状态机是否完整？",
-      "Go 与 TypeScript 的 payment-flow 状态机和幂等语义是否一致？",
-      "PR #3132 的受影响版本及历史风险范围是什么？"
+      "spendControls 当前是否覆盖累计周期额度、币种换算和并发请求？",
+      "requestUrl 的规范化、重定向和代理场景如何处理？",
+      "策略拒绝事件能否进入商户风控和争议审计链路？"
     ],
     "follow_up_triggers": [
-      "正式版本同时包含 SVM `upto` 与 Go payment flows",
-      "出现生产 Facilitator 或 API 商户采用",
-      "项目发布 SVM 校验安全公告或受影响版本说明"
+      "spendControls 扩展到累计预算或服务端 policy token",
+      "SIWX 来源绑定进入正式版本与其他语言 SDK",
+      "出现生产 Facilitator 或商户采用案例"
     ],
     "related_sources": [
-      "https://github.com/x402-foundation/x402/pull/3115",
-      "https://github.com/x402-foundation/x402/pull/3132",
-      "https://github.com/x402-foundation/x402/pull/3135",
-      "https://github.com/x402-foundation/x402/commit/79b62597aed18154649c961044b5033f24c80169",
-      "https://github.com/x402-foundation/x402/commit/f62a9facb1c7755c4bfbccb21bbb90ab9e70f787",
-      "https://github.com/x402-foundation/x402/commit/16a23d0989bbb674069cc5bd1d481dbce9cc626e"
+      "https://github.com/x402-foundation/x402/pull/3133",
+      "https://github.com/x402-foundation/x402/pull/3143",
+      "https://github.com/x402-foundation/x402/pull/3147",
+      "https://github.com/x402-foundation/x402/commit/4f587236e99928d05677ab63a0bafe6120dc1111",
+      "https://github.com/x402-foundation/x402/commit/c2612d31e7d93c035acaff8bc72575f4716ba691"
     ],
     "scores": {
       "agentic_relevance": 5,
@@ -56,131 +57,202 @@ window.DAILY_SIGNALS = [
       "infrastructure_value": 5,
       "strategic_value": 4,
       "source_quality": 5,
-      "lianlian_relevance": 4,
+      "lianlian_relevance": 5,
       "cross_border_value": 3,
       "merchant_value": 4,
       "product_actionability": 5,
       "competitive_impact": 4
     },
-    "report_date": "2026-08-13",
-    "event_date": "2026-08-12",
-    "first_seen_date": "2026-08-13",
-    "last_seen_date": "2026-08-13",
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-13",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
     "run_dates": [
-      "2026-08-13"
+      "2026-08-14"
     ]
   },
   {
-    "id": "2026-08-13-boe-digital-pound-lab-crossborder-stablecoin",
-    "event_key": "boe:digital-pound-lab:crossborder-stablecoin-trade-finance:2026-08-12",
+    "id": "ucp-20260813-merchant-context-sale-basis-batch",
+    "event_key": "ucp:engineering-batch:merchant-context-sale-basis:2026-08-13",
+    "event_id": "PR-642+PR-653+PR-718+PR-720",
     "demo": false,
-    "title": "媒体称英国央行实验室测试稳定币与数字英镑跨境贸易融资互操作",
-    "summary": "CoinDesk 报道，英国央行主导的 Digital Pound Lab 正测试一条跨境贸易融资流程：出口商接收稳定币，进口商以模拟数字英镑结算；本轮未能访问英国央行官网完成一手核验。",
+    "title": "UCP 同批补齐位置上下文、计量销售语义与分账文档入口",
+    "summary": "Universal Commerce Protocol 在本窗口合并四项相关更新：PR #653 定义数量的 sale-basis steps；PR #642 支持平台发起请求携带位置上下文；PR #720 将 Split Payments 与术语表纳入 llms.txt；PR #718 增加住宿技术委员会公告。它们共同增强 Agent 发起商业请求时的商品计量、位置、分账发现与垂直场景表达。",
+    "decision": "include",
+    "confidence": 94,
+    "relevance_level": "P1",
+    "signal_type": "core",
+    "content_type": "technical_update",
+    "information_type": "protocol_standard",
+    "evidence_level": "confirmed",
+    "source": "Universal Commerce Protocol GitHub",
+    "url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/653",
+    "canonical_url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/653",
+    "published_at": "2026-08-12T19:42:26Z",
+    "current_evidence": "UCP main 分支在窗口内包含 PR #653、#642、#718、#720 对应提交；各事件 ID 单独保留并在同主题工程卡中关联。",
+    "primary_tags": [
+      "UCP",
+      "Agent Commerce",
+      "Merchant Checkout"
+    ],
+    "secondary_tags": [
+      "Sale Basis",
+      "Location Context",
+      "Split Payments",
+      "Lodging"
+    ],
+    "why_it_matters_cn": "Agent Checkout 不只需要支付动作，还要准确表达按件、按量或分步销售、门店/履约位置以及多方分账；这些字段决定协议能否进入复杂商户场景。",
+    "potential_impact_on_lianlian_cn": "连连的商户商品、订单、分账与收单接口未来可能需要映射 UCP 上下文，尤其是平台型商户、住宿和多方履约场景。",
+    "product_opportunity_cn": "建立 UCP 到连连订单/收单/分账模型的字段映射 PoC，验证数量语义、税费、位置、子商户、分账和退款的一致性。",
+    "competitive_risk_cn": "若 UCP 平台先定义商品与分账语义，支付机构可能被压缩为后置执行通道，失去 Agent 商业入口和商户数据关系。",
+    "recommended_action": "investigate",
+    "questions_to_validate": [
+      "sale-basis steps 如何映射部分履约、退款和争议？",
+      "location context 是否影响税、币种、收单实体与本地支付方式？",
+      "Split Payments 规范是否定义资金持有、责任和子商户合规边界？"
+    ],
+    "follow_up_triggers": [
+      "UCP 发布稳定版本或主流 AI 平台采用",
+      "Split Payments 从文档索引进入可执行 API",
+      "住宿或平台商户公开生产接入"
+    ],
+    "related_sources": [
+      "https://github.com/Universal-Commerce-Protocol/ucp/pull/642",
+      "https://github.com/Universal-Commerce-Protocol/ucp/pull/718",
+      "https://github.com/Universal-Commerce-Protocol/ucp/pull/720",
+      "https://github.com/Universal-Commerce-Protocol/ucp/commit/5a5d9e11174ea656df5f2e43d07b90c01469d08c",
+      "https://github.com/Universal-Commerce-Protocol/ucp/commit/72914f42b2cb9a6de4ad1f8908ffa9323628dda5"
+    ],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 4,
+      "infrastructure_value": 5,
+      "strategic_value": 4,
+      "source_quality": 5,
+      "lianlian_relevance": 5,
+      "cross_border_value": 3,
+      "merchant_value": 5,
+      "product_actionability": 5,
+      "competitive_impact": 4
+    },
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-12",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
+    "run_dates": [
+      "2026-08-14"
+    ]
+  },
+  {
+    "id": "2026-08-14-bc-card-coinbase-usdc-tourist-poc",
+    "event_key": "bc-card:coinbase:usdc-tourist-poc-complete:2026-08-13",
+    "demo": false,
+    "title": "媒体称 BC Card 与 Coinbase 完成游客 USDC 商户支付 PoC",
+    "summary": "移动支付网报道，BC Card、Coinbase 与 Wavebridge 完成为期三个月的稳定币支付 PoC：境外游客使用 Base 钱包中的 USDC，在韩国 BC Card 二维码商户付款。当前未取得三方本次完成公告，因此不把规模化上线视为已确认。",
     "decision": "watchlist",
-    "confidence": 76,
+    "confidence": 78,
     "relevance_level": "P2",
     "signal_type": "strategic_radar",
     "content_type": "media_report",
     "information_type": "partnership_pilot",
     "evidence_level": "reported",
-    "source": "CoinDesk",
-    "url": "https://www.coindesk.com/business/2026/08/12/bank-of-england-to-test-stablecoin-digital-currency-use-in-cross-border-finance",
-    "canonical_url": "https://www.coindesk.com/business/2026/08/12/bank-of-england-to-test-stablecoin-digital-currency-use-in-cross-border-finance",
-    "published_at": "2026-08-12T10:17:05Z",
+    "source": "移动支付网",
+    "url": "https://mpaypass.com.cn/news/202608/13103640.html",
+    "canonical_url": "https://mpaypass.com.cn/news/202608/13103640.html",
+    "published_at": "2026-08-13T02:37:00Z",
+    "current_evidence": "移动支付网页面具名 BC Card、Coinbase、Wavebridge，并描述游客、Base 钱包、USDC 与 BC Card 二维码商户流程；本轮无一手完成公告。",
     "primary_tags": [
-      "Cross-border Settlement",
-      "Stablecoin"
+      "Stablecoin Payment",
+      "Cross-border Checkout"
     ],
     "secondary_tags": [
-      "Digital Pound",
-      "Trade Finance",
-      "Interoperability",
-      "CBDC"
+      "BC Card",
+      "Coinbase",
+      "USDC",
+      "Tourism"
     ],
-    "why_it_matters_cn": "该试验把稳定币收款与央行数字货币结算放入同一跨境贸易流程，可能预示未来自动化资金流需要兼容多种数字货币轨道。",
-    "potential_impact_on_lianlian_cn": "若此类互操作模式进入生产，连连的跨境账户、FX、贸易付款和合规系统需支持稳定币与受监管数字货币之间的路由和对账。",
-    "product_opportunity_cn": "研究稳定币收款、数字英镑付款和法币账户之间的消息、流动性、合规与最终结算接口。",
-    "competitive_risk_cn": "央行、银行和稳定币机构若直接建立互操作网络，可能改变 PSP 在跨境贸易资金链中的路由角色。",
+    "why_it_matters_cn": "该 PoC 把境外钱包中的稳定币直接接入本地二维码商户受理网络，验证钱包、收单网络与本地商户关系的组合方式。",
+    "potential_impact_on_lianlian_cn": "这与连连跨境游客支付、商户收单、稳定币换汇和本地结算相邻，可作为亚洲市场稳定币消费支付的架构样本。",
+    "product_opportunity_cn": "评估境外稳定币钱包到本地二维码商户的报价、KYC/AML、制裁筛查、退款、FX、商户结算与对账方案。",
+    "competitive_risk_cn": "卡网络与大型钱包若先打通稳定币到本地商户二维码的入口，跨境 PSP 可能失去游客支付的换汇与路由环节。",
     "recommended_action": "monitor",
     "questions_to_validate": [
-      "英国央行官方试验文件、参与机构和时间表是什么？",
-      "试验是否涉及真实资金、哪些稳定币及合规责任？"
+      "PoC 的真实交易量、商户范围和结算币种是什么？",
+      "Coinbase、BC Card 与 Wavebridge 分别承担何种合规和资金角色？",
+      "是否计划从试验转为正式商用？"
     ],
     "follow_up_triggers": [
-      "英国央行发布正式实验结果",
-      "披露参与银行或稳定币发行方",
-      "从模拟进入真实资金试点"
+      "BC Card 或 Coinbase 发布一手结果",
+      "开放真实商户或游客规模化使用",
+      "披露结算、退款和合规架构"
     ],
-    "related_sources": [
-      "https://cointelegraph.com/news/bank-of-england-tests-stablecoin-digital-pound-interoperability-in-cross-border-payments"
-    ],
+    "related_sources": [],
     "scores": {
       "agentic_relevance": 1,
       "payment_relevance": 5,
-      "infrastructure_value": 5,
+      "infrastructure_value": 4,
       "strategic_value": 4,
       "source_quality": 3,
       "lianlian_relevance": 5,
       "cross_border_value": 5,
-      "merchant_value": 2,
+      "merchant_value": 5,
       "product_actionability": 4,
-      "competitive_impact": 3
+      "competitive_impact": 4
     },
-    "report_date": "2026-08-13",
-    "event_date": "2026-08-12",
-    "first_seen_date": "2026-08-13",
-    "last_seen_date": "2026-08-13",
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-13",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
     "run_dates": [
-      "2026-08-13"
+      "2026-08-14"
     ]
   },
   {
-    "id": "2026-08-13-anchorpoint-hkdap-stablecoin-distribution",
-    "event_key": "anchorpoint:hkdap:institutional-distribution:2026-08-12",
+    "id": "2026-08-14-thunes-eurc-crossborder-integration",
+    "event_key": "thunes:eurc:crossborder-network-integration:2026-08-13",
     "demo": false,
-    "title": "媒体称 Anchorpoint 启动香港稳定币 HKDAP 机构分发",
-    "summary": "CoinDesk、The Block 与 Cointelegraph 报道，渣打支持的 Anchorpoint 在获批后开始推出港元稳定币 HKDAP，HashKey Exchange 与 OSL Group 可面向机构和专业投资者提供铸造、赎回或分发服务；本轮未取得发行方或香港金管局一手公告。",
+    "title": "媒体称 Thunes 将 EURC 接入跨境支付网络",
+    "summary": "移动支付网报道，Thunes 将 Circle 的欧元稳定币 EURC 接入其跨境支付网络。当前仅取得媒体发现材料，未在本轮取得 Thunes 或 Circle 对本次集成的一手公告，具体覆盖市场、客户与结算流程待核验。",
     "decision": "watchlist",
-    "confidence": 79,
+    "confidence": 72,
     "relevance_level": "P2",
     "signal_type": "strategic_radar",
     "content_type": "media_report",
     "information_type": "product_capability",
     "evidence_level": "reported",
-    "source": "CoinDesk",
-    "url": "https://www.coindesk.com/business/2026/08/12/standard-chartered-led-anchorpoint-launches-hong-kong-dollar-stablecoin",
-    "canonical_url": "https://www.coindesk.com/business/2026/08/12/standard-chartered-led-anchorpoint-launches-hong-kong-dollar-stablecoin",
-    "published_at": "2026-08-12T13:13:49Z",
+    "source": "移动支付网",
+    "url": "https://mpaypass.com.cn/news/202608/13170259.html",
+    "canonical_url": "https://mpaypass.com.cn/news/202608/13170259.html",
+    "published_at": "2026-08-13T09:01:00Z",
+    "current_evidence": "采集到移动支付网具名 Thunes 与 EURC 的集成报道；一手产品页面和可用范围尚未核验。",
     "primary_tags": [
-      "HKD Stablecoin",
+      "EURC",
       "Cross-border Settlement"
     ],
     "secondary_tags": [
-      "Anchorpoint",
-      "HashKey",
-      "OSL",
-      "Hong Kong"
+      "Thunes",
+      "Stablecoin",
+      "FX",
+      "Payout"
     ],
-    "why_it_matters_cn": "受监管港元稳定币若形成机构铸造和赎回网络，可成为亚洲商户结算、资金管理及未来 Agent 自动付款的本地货币轨道。",
-    "potential_impact_on_lianlian_cn": "HKDAP 的分发、储备、赎回和银行连接与连连香港及跨境资金能力高度相邻，应评估其对港元收付和稳定币结算产品的影响。",
-    "product_opportunity_cn": "核验准入对象与接口，评估 HKDAP 在跨境商户结算、Treasury、Payout 和稳定币/法币转换中的合作或接入路径。",
-    "competitive_risk_cn": "Anchorpoint 联合银行、交易平台和持牌机构构建分发网络，可能先占据香港稳定币流动性与企业入口。",
+    "why_it_matters_cn": "欧元稳定币进入全球支付网络，可能让可编程系统和未来 Agent 直接调用欧元计价的跨境收付与结算轨道。",
+    "potential_impact_on_lianlian_cn": "Thunes 与连连在全球收付和网络覆盖上相邻；EURC 集成可能改变欧洲跨境结算成本、时效和合作网络选择。",
+    "product_opportunity_cn": "核验 EURC 的入金、出金、流动性、FX、企业准入与目的地覆盖，评估欧元稳定币结算和 Agent API 的组合路径。",
+    "competitive_risk_cn": "全球支付网络若把稳定币结算直接产品化，可能以更短资金链争夺平台和自动化支付客户。",
     "recommended_action": "investigate",
     "questions_to_validate": [
-      "发行牌照、储备与赎回规则的官方出处是什么？",
-      "HashKey 和 OSL 的授权范围、客户门槛与 API 可用性如何？"
+      "Thunes 官方产品范围与上线日期是什么？",
+      "EURC 在哪些国家、账户与付款类型可用？",
+      "最终商户/收款人收到 EURC 还是法币？"
     ],
     "follow_up_triggers": [
-      "Anchorpoint 或香港金管局发布一手公告",
-      "开放企业 API 或商户结算",
-      "披露流通量、储备报告与跨境场景"
+      "Thunes 或 Circle 发布官方公告/API",
+      "披露首批客户和交易规模",
+      "支持自动化或 Agent 发起的跨境付款"
     ],
-    "related_sources": [
-      "https://theblock.co/news/business/2026-08-12-standard-chartered-anchorpoint-hkdap-stablecoin-rollout-411575",
-      "https://cointelegraph.com/news/hashkey-begins-beta-distribution-of-hong-kong-regulated-hkdap-stablecoin"
-    ],
+    "related_sources": [],
     "scores": {
-      "agentic_relevance": 1,
+      "agentic_relevance": 2,
       "payment_relevance": 5,
       "infrastructure_value": 5,
       "strategic_value": 4,
@@ -191,12 +263,138 @@ window.DAILY_SIGNALS = [
       "product_actionability": 4,
       "competitive_impact": 4
     },
-    "report_date": "2026-08-13",
-    "event_date": "2026-08-12",
-    "first_seen_date": "2026-08-13",
-    "last_seen_date": "2026-08-13",
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-13",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
     "run_dates": [
-      "2026-08-13"
+      "2026-08-14"
+    ]
+  },
+  {
+    "id": "2026-08-14-x402-volume-decline-93pct-report",
+    "event_key": "x402:reported-volume-decline:2026-08-13",
+    "demo": false,
+    "title": "报告称 x402 年初至今日均支付量下降 93%",
+    "summary": "移动支付网援引 Real Vision 分析师 Jamie Coutts 的报告称，x402 年初至今日均支付量下降 93%，并将 Cloudflare 变现网关视为潜在后续催化。未取得原始报告的数据口径、起止日期和链上查询，因此该数字标记为 reported。",
+    "decision": "watchlist",
+    "confidence": 70,
+    "relevance_level": "P2",
+    "signal_type": "research",
+    "content_type": "media_report",
+    "information_type": "research_insight",
+    "evidence_level": "reported",
+    "source": "移动支付网",
+    "url": "https://mpaypass.com.cn/news/202608/13142926.html",
+    "canonical_url": "https://mpaypass.com.cn/news/202608/13142926.html",
+    "published_at": "2026-08-13T06:30:00Z",
+    "current_evidence": "媒体页面明确给出 93% 数字、归因于 Jamie Coutts/Real Vision，并标注文章由 AI 辅助翻译编辑；原始报告未取得。",
+    "primary_tags": [
+      "x402",
+      "Adoption"
+    ],
+    "secondary_tags": [
+      "Payment Volume",
+      "Cloudflare",
+      "API Monetization"
+    ],
+    "why_it_matters_cn": "协议工程更新密集并不等于真实付款采用；交易量下滑提示产品判断必须同时跟踪活跃商户、付费 API 和重复支付行为。",
+    "potential_impact_on_lianlian_cn": "连连不应只按协议热度投入，应把真实交易需求、商户留存和稳定币资金效率设为 PoC 继续条件。",
+    "product_opportunity_cn": "建立 x402 adoption 仪表盘，按网络、Facilitator、商户、API 类别、金额与复购拆分交易，而不是只看总笔数。",
+    "competitive_risk_cn": "若市场采用不足，过早重投入会形成机会成本；若 Cloudflare 等入口带来反弹，未提前建立监测又可能错过窗口。",
+    "recommended_action": "monitor",
+    "questions_to_validate": [
+      "93% 的基期、终点、网络和交易口径是什么？",
+      "是否剔除测试、刷量和单一高频服务？",
+      "Cloudflare 接入后活跃商户和重复付款是否改善？"
+    ],
+    "follow_up_triggers": [
+      "取得原始报告或可复算链上数据",
+      "月活商户和重复付款连续增长",
+      "大型 API/内容平台披露生产交易量"
+    ],
+    "related_sources": [],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
+      "infrastructure_value": 3,
+      "strategic_value": 4,
+      "source_quality": 2,
+      "lianlian_relevance": 4,
+      "cross_border_value": 2,
+      "merchant_value": 3,
+      "product_actionability": 4,
+      "competitive_impact": 3
+    },
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-13",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
+    "run_dates": [
+      "2026-08-14"
+    ]
+  },
+  {
+    "id": "2026-08-14-mica-stablecoin-self-custody-restriction-report",
+    "event_key": "eu:mica:stablecoin-issuer-self-custody-restriction:2026-08-14",
+    "demo": false,
+    "title": "媒体称 14 家欧洲稳定币发行商受 MiCA 自有代币托管限制",
+    "summary": "移动支付网报道，欧洲 MiCA 规则适用下有 14 家稳定币发行商被禁止托管其自有代币。当前未取得对应监管决定或发行商清单的一手文件，禁止范围、法律依据与对赎回流程的影响仍待核验。",
+    "decision": "watchlist",
+    "confidence": 65,
+    "relevance_level": "P2",
+    "signal_type": "regulation",
+    "content_type": "media_report",
+    "information_type": "regulation_compliance",
+    "evidence_level": "reported",
+    "source": "移动支付网",
+    "url": "https://mpaypass.com.cn/news/202608/14093434.html",
+    "canonical_url": "https://mpaypass.com.cn/news/202608/14093434.html",
+    "published_at": "2026-08-14T01:29:00Z",
+    "current_evidence": "来源页标题与元数据指向 MiCA、自有代币托管和 14 家发行商；尚无监管原文或完整名单。",
+    "primary_tags": [
+      "MiCA",
+      "Stablecoin Compliance"
+    ],
+    "secondary_tags": [
+      "Custody",
+      "Redemption",
+      "European Union"
+    ],
+    "why_it_matters_cn": "发行、托管和赎回角色若被强制分离，会改变稳定币支付的资金控制、合作机构和运营成本，并影响自动化结算可用性。",
+    "potential_impact_on_lianlian_cn": "连连若在欧洲接入稳定币收付，需要确认发行方、自托管限制、客户资产隔离和赎回链路是否要求独立持牌托管人。",
+    "product_opportunity_cn": "建立欧洲稳定币角色矩阵，将发行、托管、兑换、商户结算与 Agent 授权分别映射到牌照和责任主体。",
+    "competitive_risk_cn": "已具备欧盟托管与稳定币合作网络的 PSP 可能更快满足角色分离要求，抢占跨境商户。",
+    "recommended_action": "investigate",
+    "questions_to_validate": [
+      "监管原文、主管机构和 14 家名单是什么？",
+      "限制针对发行人自托管、客户托管还是储备资产托管？",
+      "对铸造、赎回和商户结算的实际影响是什么？"
+    ],
+    "follow_up_triggers": [
+      "取得欧盟或成员国监管文件",
+      "相关发行商调整托管或赎回架构",
+      "稳定币支付服务商披露 MiCA 合规方案"
+    ],
+    "related_sources": [],
+    "scores": {
+      "agentic_relevance": 1,
+      "payment_relevance": 4,
+      "infrastructure_value": 4,
+      "strategic_value": 4,
+      "source_quality": 2,
+      "lianlian_relevance": 4,
+      "cross_border_value": 4,
+      "merchant_value": 2,
+      "product_actionability": 4,
+      "competitive_impact": 3
+    },
+    "report_date": "2026-08-14",
+    "event_date": "2026-08-14",
+    "first_seen_date": "2026-08-14",
+    "last_seen_date": "2026-08-14",
+    "run_dates": [
+      "2026-08-14"
     ]
   }
 ];
