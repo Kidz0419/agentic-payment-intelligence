@@ -9,28 +9,26 @@
         "ucp-20260813-merchant-context-sale-basis-batch",
         "2026-08-14-bc-card-coinbase-usdc-tourist-poc",
         "2026-08-14-thunes-eurc-crossborder-integration",
-        "2026-08-14-x402-volume-decline-93pct-report",
-        "2026-08-14-mica-stablecoin-self-custody-restriction-report"
+        "2026-08-14-x402-volume-decline-93pct-report"
       ],
       "counts": {
-        "total": 6,
+        "total": 5,
         "P0": 0,
         "P1": 2,
-        "P2": 4
+        "P2": 3
       }
     },
     {
       "date": "2026-08-13",
       "signal_ids": [
         "x402-20260812-payment-flows-svm-security-batch",
-        "2026-08-13-boe-digital-pound-lab-crossborder-stablecoin",
-        "2026-08-13-anchorpoint-hkdap-stablecoin-distribution"
+        "2026-08-13-boe-digital-pound-lab-crossborder-stablecoin"
       ],
       "counts": {
-        "total": 3,
+        "total": 2,
         "P0": 0,
         "P1": 1,
-        "P2": 2
+        "P2": 1
       }
     },
     {
@@ -55,14 +53,13 @@
       "signal_ids": [
         "decta-openpayd-usdc-treasury-settlement",
         "x402-engineering-network-token-monad-20260811",
-        "ucp-core-release-versioning-contract",
-        "fireblocks-cari-tokenized-deposits-model"
+        "ucp-core-release-versioning-contract"
       ],
       "counts": {
-        "total": 4,
+        "total": 3,
         "P0": 0,
         "P1": 1,
-        "P2": 3
+        "P2": 2
       }
     },
     {
@@ -461,69 +458,6 @@
       ]
     },
     {
-      "id": "2026-08-14-mica-stablecoin-self-custody-restriction-report",
-      "event_key": "eu:mica:stablecoin-issuer-self-custody-restriction:2026-08-14",
-      "demo": false,
-      "title": "媒体称 14 家欧洲稳定币发行商受 MiCA 自有代币托管限制",
-      "summary": "移动支付网报道，欧洲 MiCA 规则适用下有 14 家稳定币发行商被禁止托管其自有代币。当前未取得对应监管决定或发行商清单的一手文件，禁止范围、法律依据与对赎回流程的影响仍待核验。",
-      "decision": "watchlist",
-      "confidence": 65,
-      "relevance_level": "P2",
-      "signal_type": "regulation",
-      "content_type": "media_report",
-      "information_type": "regulation_compliance",
-      "evidence_level": "reported",
-      "source": "移动支付网",
-      "url": "https://mpaypass.com.cn/news/202608/14093434.html",
-      "canonical_url": "https://mpaypass.com.cn/news/202608/14093434.html",
-      "published_at": "2026-08-14T01:29:00Z",
-      "current_evidence": "来源页标题与元数据指向 MiCA、自有代币托管和 14 家发行商；尚无监管原文或完整名单。",
-      "primary_tags": [
-        "MiCA",
-        "Stablecoin Compliance"
-      ],
-      "secondary_tags": [
-        "Custody",
-        "Redemption",
-        "European Union"
-      ],
-      "why_it_matters_cn": "发行、托管和赎回角色若被强制分离，会改变稳定币支付的资金控制、合作机构和运营成本，并影响自动化结算可用性。",
-      "potential_impact_on_lianlian_cn": "连连若在欧洲接入稳定币收付，需要确认发行方、自托管限制、客户资产隔离和赎回链路是否要求独立持牌托管人。",
-      "product_opportunity_cn": "建立欧洲稳定币角色矩阵，将发行、托管、兑换、商户结算与 Agent 授权分别映射到牌照和责任主体。",
-      "competitive_risk_cn": "已具备欧盟托管与稳定币合作网络的 PSP 可能更快满足角色分离要求，抢占跨境商户。",
-      "recommended_action": "investigate",
-      "questions_to_validate": [
-        "监管原文、主管机构和 14 家名单是什么？",
-        "限制针对发行人自托管、客户托管还是储备资产托管？",
-        "对铸造、赎回和商户结算的实际影响是什么？"
-      ],
-      "follow_up_triggers": [
-        "取得欧盟或成员国监管文件",
-        "相关发行商调整托管或赎回架构",
-        "稳定币支付服务商披露 MiCA 合规方案"
-      ],
-      "related_sources": [],
-      "scores": {
-        "agentic_relevance": 1,
-        "payment_relevance": 4,
-        "infrastructure_value": 4,
-        "strategic_value": 4,
-        "source_quality": 2,
-        "lianlian_relevance": 4,
-        "cross_border_value": 4,
-        "merchant_value": 2,
-        "product_actionability": 4,
-        "competitive_impact": 3
-      },
-      "report_date": "2026-08-14",
-      "event_date": "2026-08-14",
-      "first_seen_date": "2026-08-14",
-      "last_seen_date": "2026-08-14",
-      "run_dates": [
-        "2026-08-14"
-      ]
-    },
-    {
       "id": "x402-20260812-payment-flows-svm-security-batch",
       "event_key": "x402:engineering-batch:payment-flows-svm-security:2026-08-12",
       "event_id": "PR-3094+PR-3115+PR-3132",
@@ -649,71 +583,6 @@
         "merchant_value": 2,
         "product_actionability": 4,
         "competitive_impact": 3
-      },
-      "report_date": "2026-08-13",
-      "event_date": "2026-08-12",
-      "first_seen_date": "2026-08-13",
-      "last_seen_date": "2026-08-13",
-      "run_dates": [
-        "2026-08-13"
-      ]
-    },
-    {
-      "id": "2026-08-13-anchorpoint-hkdap-stablecoin-distribution",
-      "event_key": "anchorpoint:hkdap:institutional-distribution:2026-08-12",
-      "demo": false,
-      "title": "媒体称 Anchorpoint 启动香港稳定币 HKDAP 机构分发",
-      "summary": "CoinDesk、The Block 与 Cointelegraph 报道，渣打支持的 Anchorpoint 在获批后开始推出港元稳定币 HKDAP，HashKey Exchange 与 OSL Group 可面向机构和专业投资者提供铸造、赎回或分发服务；本轮未取得发行方或香港金管局一手公告。",
-      "decision": "watchlist",
-      "confidence": 79,
-      "relevance_level": "P2",
-      "signal_type": "strategic_radar",
-      "content_type": "media_report",
-      "information_type": "product_capability",
-      "evidence_level": "reported",
-      "source": "CoinDesk",
-      "url": "https://www.coindesk.com/business/2026/08/12/standard-chartered-led-anchorpoint-launches-hong-kong-dollar-stablecoin",
-      "canonical_url": "https://www.coindesk.com/business/2026/08/12/standard-chartered-led-anchorpoint-launches-hong-kong-dollar-stablecoin",
-      "published_at": "2026-08-12T13:13:49Z",
-      "primary_tags": [
-        "HKD Stablecoin",
-        "Cross-border Settlement"
-      ],
-      "secondary_tags": [
-        "Anchorpoint",
-        "HashKey",
-        "OSL",
-        "Hong Kong"
-      ],
-      "why_it_matters_cn": "受监管港元稳定币若形成机构铸造和赎回网络，可成为亚洲商户结算、资金管理及未来 Agent 自动付款的本地货币轨道。",
-      "potential_impact_on_lianlian_cn": "HKDAP 的分发、储备、赎回和银行连接与连连香港及跨境资金能力高度相邻，应评估其对港元收付和稳定币结算产品的影响。",
-      "product_opportunity_cn": "核验准入对象与接口，评估 HKDAP 在跨境商户结算、Treasury、Payout 和稳定币/法币转换中的合作或接入路径。",
-      "competitive_risk_cn": "Anchorpoint 联合银行、交易平台和持牌机构构建分发网络，可能先占据香港稳定币流动性与企业入口。",
-      "recommended_action": "investigate",
-      "questions_to_validate": [
-        "发行牌照、储备与赎回规则的官方出处是什么？",
-        "HashKey 和 OSL 的授权范围、客户门槛与 API 可用性如何？"
-      ],
-      "follow_up_triggers": [
-        "Anchorpoint 或香港金管局发布一手公告",
-        "开放企业 API 或商户结算",
-        "披露流通量、储备报告与跨境场景"
-      ],
-      "related_sources": [
-        "https://theblock.co/news/business/2026-08-12-standard-chartered-anchorpoint-hkdap-stablecoin-rollout-411575",
-        "https://cointelegraph.com/news/hashkey-begins-beta-distribution-of-hong-kong-regulated-hkdap-stablecoin"
-      ],
-      "scores": {
-        "agentic_relevance": 1,
-        "payment_relevance": 5,
-        "infrastructure_value": 5,
-        "strategic_value": 4,
-        "source_quality": 3,
-        "lianlian_relevance": 5,
-        "cross_border_value": 5,
-        "merchant_value": 3,
-        "product_actionability": 4,
-        "competitive_impact": 4
       },
       "report_date": "2026-08-13",
       "event_date": "2026-08-12",
@@ -1251,63 +1120,6 @@
       "report_date": "2026-08-11",
       "event_date": "2026-08-10",
       "canonical_url": "https://github.com/Universal-Commerce-Protocol/ucp/commit/417aea4fea969e2e3dd66186f9604adb66fb6e4b",
-      "first_seen_date": "2026-08-11",
-      "last_seen_date": "2026-08-11",
-      "run_dates": [
-        "2026-08-11"
-      ]
-    },
-    {
-      "id": "fireblocks-cari-tokenized-deposits-model",
-      "demo": false,
-      "title": "Fireblocks 与 Cari Network 发布美国银行跨行 Tokenized Deposits 模型",
-      "summary": "Fireblocks 官方博客发布与 Cari Network 相关的美国银行跨行 Tokenized Deposits 模型。本期确认官方发布，但参与银行和试点范围仍待核验。",
-      "decision": "watchlist",
-      "confidence": 90,
-      "relevance_level": "P2",
-      "signal_type": "strategic_radar",
-      "content_type": "official_release",
-      "information_type": "research_insight",
-      "evidence_level": "confirmed",
-      "source": "Fireblocks",
-      "url": "https://fireblocks.com/blog/inter-bank-tokenized-deposits-cari-network",
-      "published_at": "2026-08-10T00:00:00Z",
-      "primary_tags": [
-        "Tokenized Deposits",
-        "Inter-bank Settlement"
-      ],
-      "secondary_tags": [
-        "Fireblocks",
-        "Cari Network"
-      ],
-      "why_it_matters_cn": "Tokenized Deposits 可能成为银行体系内可编程资金和实时结算的另一条路径。",
-      "potential_impact_on_lianlian_cn": "应与稳定币并列研究其跨境结算、资金安全和监管差异。",
-      "product_opportunity_cn": "比较 Tokenized Deposits、稳定币和传统银行账户的产品接口与责任边界。",
-      "competitive_risk_cn": "银行代币化存款网络可能重塑支付机构的结算角色。",
-      "recommended_action": "investigate",
-      "questions_to_validate": [
-        "参与银行和试点范围是什么？",
-        "是否提供 PSP 或企业接口？"
-      ],
-      "follow_up_triggers": [
-        "公布银行参与方",
-        "进入生产结算"
-      ],
-      "scores": {
-        "agentic_relevance": 1,
-        "payment_relevance": 5,
-        "infrastructure_value": 5,
-        "strategic_value": 4,
-        "source_quality": 5,
-        "lianlian_relevance": 5,
-        "cross_border_value": 4,
-        "merchant_value": 2,
-        "product_actionability": 4,
-        "competitive_impact": 4
-      },
-      "report_date": "2026-08-11",
-      "event_date": "2026-08-10",
-      "canonical_url": "https://fireblocks.com/blog/inter-bank-tokenized-deposits-cari-network",
       "first_seen_date": "2026-08-11",
       "last_seen_date": "2026-08-11",
       "run_dates": [
