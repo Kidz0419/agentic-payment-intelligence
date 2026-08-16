@@ -4,11 +4,14 @@ window.DAILY_HISTORY = {
   "days": [
     {
       "date": "2026-08-17",
-      "signal_ids": [],
+      "signal_ids": [
+        "ucp-20260814-payment-terms-pr-602",
+        "x402-20260814-weekend-settlement-reliability-batch"
+      ],
       "counts": {
-        "total": 0,
+        "total": 2,
         "P0": 0,
-        "P1": 0,
+        "P1": 2,
         "P2": 0
       }
     },
@@ -24,15 +27,11 @@ window.DAILY_HISTORY = {
     },
     {
       "date": "2026-08-15",
-      "signal_ids": [
-        "ucp-20260814-payment-terms-pr-602",
-        "x402-20260814-svm-upto-compute-budget-pr-3155",
-        "x402-20260814-monad-usdc-v1-domain-fix-pr-3153"
-      ],
+      "signal_ids": [],
       "counts": {
-        "total": 3,
+        "total": 0,
         "P0": 0,
-        "P1": 3,
+        "P1": 0,
         "P2": 0
       }
     },
@@ -220,23 +219,23 @@ window.DAILY_HISTORY = {
         "product_actionability": 5,
         "competitive_impact": 5
       },
-      "report_date": "2026-08-15",
-      "event_date": "2026-08-14",
-      "first_seen_date": "2026-08-15",
-      "last_seen_date": "2026-08-15",
+      "report_date": "2026-08-17",
+      "event_date": "2026-08-15",
+      "first_seen_date": "2026-08-17",
+      "last_seen_date": "2026-08-17",
       "run_dates": [
-        "2026-08-15"
+        "2026-08-17"
       ]
     },
     {
-      "id": "x402-20260814-svm-upto-compute-budget-pr-3155",
-      "event_key": "x402:pr:3155:svm-upto-compute-budget",
-      "event_id": "PR-3155",
+      "id": "x402-20260814-weekend-settlement-reliability-batch",
+      "event_key": "x402:weekend-batch:svm-settlement-monad-signing:2026-08-14",
+      "event_id": "PR-3155+PR-3153",
       "demo": false,
-      "title": "x402 为 SVM upto 支付补齐计算预算与优先费控制",
-      "summary": "x402 Foundation 合并 PR #3155，为 SVM upto 的开通、Facilitator claim/cancel 和租金回收交易加入静态 ComputeBudget 与可配置优先费。官方实测新客户端已与未修改的生产 Facilitator 完成 open→serve→claim，并将客户端 open 的预留计算量从 400,000 降至 90,000。",
+      "title": "x402 同批修复 SVM 结算可靠性与 Monad USDC 付款失败",
+      "summary": "x402 Foundation 在周五合并两项支付可靠性更新：PR #3155 为 SVM upto 的 open、claim/cancel 与租金回收加入计算预算和优先费控制，并披露与生产 Facilitator 的 open→serve→claim 兼容性实测；PR #3153 修正 Monad USDC v1 的 EIP-712 domain name，解决 Go/Python exact 付款的链上签名恢复失败。",
       "decision": "include",
-      "confidence": 97,
+      "confidence": 98,
       "relevance_level": "P1",
       "signal_type": "core",
       "content_type": "technical_update",
@@ -246,40 +245,49 @@ window.DAILY_HISTORY = {
       "url": "https://github.com/x402-foundation/x402/pull/3155",
       "canonical_url": "https://github.com/x402-foundation/x402/pull/3155",
       "published_at": "2026-08-14T14:19:14Z",
-      "current_evidence": "GitHub PR #3155 已合并；PR 给出 devnet 交易签名、生产 Facilitator 兼容性结果及 365 项 SVM 单元测试通过说明。",
-      "payment_landing_evidence": "SVM 客户端开通支付通道并由 Facilitator 对已交付资源执行 claim 结算；更新直接控制这些链上付款交易的计算预算、优先费和吞吐。",
+      "event_date": "2026-08-14",
+      "report_date": "2026-08-17",
+      "first_seen_date": "2026-08-17",
+      "last_seen_date": "2026-08-17",
+      "run_dates": [
+        "2026-08-17"
+      ],
+      "current_evidence": "GitHub PR #3155 与 #3153 均已合并；前者给出 devnet 交易、生产 Facilitator 兼容性与单元测试结果，后者以部署合约 name 和 DOMAIN_SEPARATOR 核验签名域修复。",
+      "payment_landing_evidence": "SVM upto 的 open→serve→claim 是实际服务交付后的收款结算流程；Monad USDC v1 exact 使用 EIP-3009 签名执行付款，错误 domain 会直接导致链上付款失败。",
       "primary_tags": [
         "x402",
-        "SVM",
-        "Payment Channel"
+        "Payment Reliability",
+        "SVM"
       ],
       "secondary_tags": [
-        "ComputeBudget",
         "Facilitator",
-        "Priority Fee",
-        "Settlement"
+        "Settlement",
+        "USDC",
+        "Monad",
+        "EIP-712"
       ],
-      "why_it_matters_cn": "upto 支付的 claim 是已交付后收款，拥堵时丢失会形成已服务未收款窗口；预算与优先费控制直接影响成本、吞吐和结算可靠性。",
-      "potential_impact_on_lianlian_cn": "连连若运营链上 Facilitator，需要把计算预算、优先费、重试和过期窗口纳入结算 SLA、资金风险与监控，而不能仅验证协议签名。",
-      "product_opportunity_cn": "构建 Facilitator 交易策略模块，按链拥堵、金额、voucher 到期时间和 Token 扩展动态配置费用、重试与告警。",
-      "competitive_risk_cn": "x402 参考实现持续把链上结算运营经验固化为默认值，第三方 Facilitator 若缺少同等可靠性和成本策略，生产竞争力会被拉开。",
+      "why_it_matters_cn": "两项更新覆盖机器支付的两个生产故障面：结算交易在拥堵下的费用与吞吐，以及多链资产元数据错误造成的签名失败。Agent 自动付款需要同时保证交易能被及时打包和签名能被正确验证。",
+      "potential_impact_on_lianlian_cn": "连连若运营或接入 x402 Facilitator，需要把计算预算、优先费、重试、过期窗口、多链 token domain 与跨 SDK 一致性纳入结算 SLA 和支付可观测性。",
+      "product_opportunity_cn": "建立统一 Facilitator 可靠性 PoC：按拥堵和 voucher 到期时间调整费用，验证 open/claim/cancel，维护经链上验证的资产元数据注册表，并支持失败诊断和紧急回滚。",
+      "competitive_risk_cn": "参考实现正在把链上结算运营经验和资产兼容修复固化为默认能力；缺少独立校验与动态费用策略的 PSP 会暴露已服务未收款和商户支付失败风险。",
       "recommended_action": "investigate",
       "recommended_owner": [
         "支付技术",
         "资金结算",
-        "风控"
+        "质量保障"
       ],
       "questions_to_validate": [
-        "静态限制在 Token-2022 transfer hook 等复杂资产下是否充足？",
-        "拥堵和 voucher 临近过期时优先费如何动态上调？",
-        "claim 失败后的商户补偿与对账责任如何定义？"
+        "主网拥堵时 claim 的成功率、费用和过期风险如何？",
+        "历史 Monad USDC v1 失败付款能否识别并安全重试？",
+        "其他链、资产和 SDK 是否存在同类 domain 漂移？"
       ],
       "follow_up_triggers": [
-        "Facilitator 侧生产版本采用新默认值",
-        "出现主网高拥堵下的 claim 数据",
-        "支持动态模拟或多收款方结算"
+        "正式版本包含两项修复",
+        "公开主网 Facilitator 结算数据",
+        "资产表增加自动链上校验与回滚"
       ],
       "related_sources": [
+        "https://github.com/x402-foundation/x402/pull/3153",
         "https://github.com/x402-foundation/x402/commit/167a828e8319aa7b403f4f4312489e9cffadff10"
       ],
       "scores": {
@@ -293,87 +301,7 @@ window.DAILY_HISTORY = {
         "merchant_value": 4,
         "product_actionability": 5,
         "competitive_impact": 4
-      },
-      "report_date": "2026-08-15",
-      "event_date": "2026-08-14",
-      "first_seen_date": "2026-08-15",
-      "last_seen_date": "2026-08-15",
-      "run_dates": [
-        "2026-08-15"
-      ]
-    },
-    {
-      "id": "x402-20260814-monad-usdc-v1-domain-fix-pr-3153",
-      "event_key": "x402:pr:3153:monad-usdc-v1-domain-fix",
-      "event_id": "PR-3153",
-      "demo": false,
-      "title": "x402 修复 Monad USDC v1 签名域错误导致的付款失败",
-      "summary": "x402 Foundation 合并 PR #3153，将 Go/Python v1 资产表中的 Monad USDC EIP-712 domain name 从 USD Coin 修正为 USDC。此前 v1 exact 客户端据此构造 EIP-3009 签名域，会导致链上签名恢复失败；修复已用部署合约的 name 与 DOMAIN_SEPARATOR 核验。",
-      "decision": "include",
-      "confidence": 98,
-      "relevance_level": "P1",
-      "signal_type": "core",
-      "content_type": "technical_update",
-      "information_type": "developer_ecosystem",
-      "evidence_level": "confirmed",
-      "source": "x402 Foundation GitHub",
-      "url": "https://github.com/x402-foundation/x402/pull/3153",
-      "canonical_url": "https://github.com/x402-foundation/x402/pull/3153",
-      "published_at": "2026-08-14T07:12:38Z",
-      "current_evidence": "GitHub PR #3153 已合并；维护者说明旧值令 Monad 上的 v1 payments 无法完成链上 signature recovery，并提供链上 domain 校验。",
-      "payment_landing_evidence": "x402 v1 exact 客户端使用 EIP-3009 签名执行 Monad USDC 付款；错误签名域会使付款链上验证失败，本次修复恢复该支付路径。",
-      "primary_tags": [
-        "x402",
-        "USDC",
-        "Monad"
-      ],
-      "secondary_tags": [
-        "EIP-712",
-        "EIP-3009",
-        "Payment Reliability",
-        "Go",
-        "Python"
-      ],
-      "why_it_matters_cn": "多链支付失败可能来自资产元数据而非余额或授权，且不同语言 SDK 可能表现不一致；Agent 自动付款需要可诊断、可回滚的资产注册表。",
-      "potential_impact_on_lianlian_cn": "连连若接入 x402 多链结算，应独立校验 token domain、合约地址、版本和 SDK 一致性，并把签名恢复失败纳入支付可观测性。",
-      "product_opportunity_cn": "建立多链资产元数据注册与上线前链上验证流水线，覆盖 DOMAIN_SEPARATOR、精度、合约版本、签名方案和回归支付。",
-      "competitive_risk_cn": "直接依赖协议默认表而无独立校验，会把上游配置错误传导为商户支付失败并损害生产 SLA。",
-      "recommended_action": "investigate",
-      "recommended_owner": [
-        "支付技术",
-        "质量保障",
-        "资金结算"
-      ],
-      "questions_to_validate": [
-        "历史失败付款能否识别并安全重试？",
-        "其他链和其他语言 SDK 是否存在同类 domain 漂移？",
-        "资产表更新如何做签名、版本和紧急回滚？"
-      ],
-      "follow_up_triggers": [
-        "发布包含修复的正式版本",
-        "出现历史失败量或生产事故披露",
-        "资产表增加自动链上校验"
-      ],
-      "related_sources": [],
-      "scores": {
-        "agentic_relevance": 5,
-        "payment_relevance": 5,
-        "infrastructure_value": 4,
-        "strategic_value": 3,
-        "source_quality": 5,
-        "lianlian_relevance": 4,
-        "cross_border_value": 3,
-        "merchant_value": 3,
-        "product_actionability": 5,
-        "competitive_impact": 3
-      },
-      "report_date": "2026-08-15",
-      "event_date": "2026-08-14",
-      "first_seen_date": "2026-08-15",
-      "last_seen_date": "2026-08-15",
-      "run_dates": [
-        "2026-08-15"
-      ]
+      }
     },
     {
       "id": "x402-20260813-spend-controls-siwx-origin-batch",
