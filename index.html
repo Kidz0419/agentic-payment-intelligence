@@ -603,13 +603,16 @@
     }
     function feishuBrief(date) {
       const rows=rowsForDay(date).sort((a,b)=>(priorityRank[a.relevance_level]??9)-(priorityRank[b.relevance_level]??9));
-      if(!rows.length) return `Agentic Payment 日报｜${date}\n\n今日无新增高价值信号。\n\n判断：没有为了凑数收录弱相关内容。继续监控 Agent 支付产品、授权协议、商户入口和跨境结算变化。\n\n知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
+      if(!rows.length) return `Agentic Payment 日报｜${date}\n\n一句话结论：今日无新增高价值 Agentic Payment 信号。\n\n重点信号：无。\n\n连连判断：没有为了凑数收录弱相关内容。\n\n建议：继续监控 Agent 支付产品、授权协议、商户入口和跨境结算变化。\n\n证据边界：本结论仅覆盖该日报窗口；失败来源形成的采集盲区以当日内部简报记录为准。\n\n来源 URL：无新增入库来源。\n\n完整知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
       const p0=rows.filter(x=>x.relevance_level==='P0').length, p1=rows.filter(x=>x.relevance_level==='P1').length, p2=rows.filter(x=>x.relevance_level==='P2').length;
       const lead=p0 ? `今天有 ${p0} 条需要立即关注的信号。` : `今天没有 P0，重点是 ${p1} 条 P1 和 ${p2} 条 P2。`;
-      const items=rows.map((s,i)=>`${i+1}. [${s.relevance_level}] ${s.title}\n${s.summary}\n连连判断：${s.potential_impact_on_lianlian_cn}\n建议：${actionLabel[s.recommended_action]||s.recommended_action}\n来源：${s.url}`).join('\n\n');
+      const items=rows.map((s,i)=>`${i+1}. [${s.relevance_level}] ${s.title}\n${s.summary}`).join('\n\n');
+      const judgment=rows.slice(0,3).map(s=>s.potential_impact_on_lianlian_cn).filter(Boolean).join('；');
+      const advice=[...new Set(rows.map(s=>actionLabel[s.recommended_action]||s.recommended_action).filter(Boolean))].join('、');
       const uncertain=rows.filter(x=>!['confirmed','primary_statement'].includes(x.evidence_level));
-      const boundary=uncertain.length ? `\n\n证据边界：${uncertain.map(x=>`${x.source}为${evidenceLabel[x.evidence_level]||x.evidence_level}`).join('；')}，相关结论仍需一手材料确认。` : '';
-      return `Agentic Payment 日报｜${date}\n\n一句话结论：${lead}\n\n重点信号\n${items}${boundary}\n\n完整知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
+      const boundary=uncertain.length ? `${uncertain.map(x=>`${x.source}为${evidenceLabel[x.evidence_level]||x.evidence_level}`).join('；')}，相关结论仍需一手材料确认。` : '入库事件均有一手或具名证据；具体能力边界仍以来源原文为准。';
+      const urls=[...new Set(rows.map(s=>s.url).filter(Boolean))].map(url=>`- ${url}`).join('\n');
+      return `Agentic Payment 日报｜${date}\n\n一句话结论：${lead}\n\n重点信号\n${items}\n\n连连判断：${judgment}\n\n建议：${advice}\n\n证据边界：${boundary}\n\n来源 URL：\n${urls}\n\n完整知识库：https://kidz0419.github.io/agentic-payment-intelligence/`;
     }
     function renderFeishu(date=state.selectedDay) {
       state.selectedDay=date;

@@ -1,7 +1,41 @@
 {
   "schema_version": 1,
-  "latest_date": "2026-08-14",
+  "latest_date": "2026-08-17",
   "days": [
+    {
+      "date": "2026-08-17",
+      "signal_ids": [],
+      "counts": {
+        "total": 0,
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      }
+    },
+    {
+      "date": "2026-08-16",
+      "signal_ids": [],
+      "counts": {
+        "total": 0,
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      }
+    },
+    {
+      "date": "2026-08-15",
+      "signal_ids": [
+        "ucp-20260814-payment-terms-pr-602",
+        "x402-20260814-svm-upto-compute-budget-pr-3155",
+        "x402-20260814-monad-usdc-v1-domain-fix-pr-3153"
+      ],
+      "counts": {
+        "total": 3,
+        "P0": 0,
+        "P1": 3,
+        "P2": 0
+      }
+    },
     {
       "date": "2026-08-14",
       "signal_ids": [
@@ -122,6 +156,225 @@
     }
   ],
   "signals": [
+    {
+      "id": "ucp-20260814-payment-terms-pr-602",
+      "event_key": "ucp:pr:602:payment-terms",
+      "event_id": "PR-602",
+      "demo": false,
+      "title": "UCP 合并 Payment Terms，支持 Agent 在结账中选择定金、延期与分期计划",
+      "summary": "Universal Commerce Protocol 合并 PR #602，新增 dev.ucp.shopping.payment_terms：商户可在同一 Checkout 提供立即全额、定金后付余额或分期等条款，Buyer/Agent 选择后由商户重新计算结账；成交订单保留 accepted_term 与绝对到期时间。",
+      "decision": "include",
+      "confidence": 98,
+      "relevance_level": "P1",
+      "signal_type": "core",
+      "content_type": "technical_update",
+      "information_type": "protocol_standard",
+      "evidence_level": "confirmed",
+      "source": "Universal Commerce Protocol GitHub",
+      "url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/602",
+      "canonical_url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/602",
+      "published_at": "2026-08-14T17:04:32Z",
+      "current_evidence": "GitHub PR #602 于 2026-08-14 合并；PR 正文和 schema 说明 terms、selected_term_id、accepted_term、schedule amount 与 due_at 的协议行为。",
+      "payment_landing_evidence": "商户在 Checkout 报出付款条款，Buyer/Agent 选择付款计划，订单保存已接受条款及每期金额和到期时间，形成可执行的收款时序。",
+      "primary_tags": [
+        "UCP",
+        "Agent Checkout",
+        "Payment Terms"
+      ],
+      "secondary_tags": [
+        "Deposit",
+        "Installments",
+        "Deferred Payment",
+        "Merchant"
+      ],
+      "why_it_matters_cn": "UCP 从一次性结账扩展到付款时间和条款协商，Agent 不仅选择商品和支付工具，还要理解并接受未来付款义务。",
+      "potential_impact_on_lianlian_cn": "连连的收单、订单、授权、分期、后续扣款与对账模型可能需要承接 UCP 的 term/schedule 语义，并保留 Agent 接受条款的审计证据。",
+      "product_opportunity_cn": "建立 UCP Payment Terms 到支付计划、后续扣款授权、到期提醒、失败重试、退款和对账字段的映射 PoC。",
+      "competitive_risk_cn": "若 UCP 与平台先控制付款条款协商，PSP 可能只执行后续扣款，难以掌握 Agent 与商户的结账决策入口。",
+      "recommended_action": "investigate",
+      "recommended_owner": [
+        "产品",
+        "支付技术",
+        "风控合规"
+      ],
+      "questions_to_validate": [
+        "selected_term 是否构成后续扣款的充分授权？",
+        "分期失败、部分退款和争议如何映射到 schedule？",
+        "跨境场景的币种、利息披露和消费者信贷责任由谁承担？"
+      ],
+      "follow_up_triggers": [
+        "Payment Terms 进入稳定版或主流平台实现",
+        "补充 instrument-to-schedule 绑定",
+        "出现商户生产接入或延期扣款案例"
+      ],
+      "related_sources": [],
+      "scores": {
+        "agentic_relevance": 5,
+        "payment_relevance": 5,
+        "infrastructure_value": 5,
+        "strategic_value": 5,
+        "source_quality": 5,
+        "lianlian_relevance": 5,
+        "cross_border_value": 3,
+        "merchant_value": 5,
+        "product_actionability": 5,
+        "competitive_impact": 5
+      },
+      "report_date": "2026-08-15",
+      "event_date": "2026-08-14",
+      "first_seen_date": "2026-08-15",
+      "last_seen_date": "2026-08-15",
+      "run_dates": [
+        "2026-08-15"
+      ]
+    },
+    {
+      "id": "x402-20260814-svm-upto-compute-budget-pr-3155",
+      "event_key": "x402:pr:3155:svm-upto-compute-budget",
+      "event_id": "PR-3155",
+      "demo": false,
+      "title": "x402 为 SVM upto 支付补齐计算预算与优先费控制",
+      "summary": "x402 Foundation 合并 PR #3155，为 SVM upto 的开通、Facilitator claim/cancel 和租金回收交易加入静态 ComputeBudget 与可配置优先费。官方实测新客户端已与未修改的生产 Facilitator 完成 open→serve→claim，并将客户端 open 的预留计算量从 400,000 降至 90,000。",
+      "decision": "include",
+      "confidence": 97,
+      "relevance_level": "P1",
+      "signal_type": "core",
+      "content_type": "technical_update",
+      "information_type": "developer_ecosystem",
+      "evidence_level": "confirmed",
+      "source": "x402 Foundation GitHub",
+      "url": "https://github.com/x402-foundation/x402/pull/3155",
+      "canonical_url": "https://github.com/x402-foundation/x402/pull/3155",
+      "published_at": "2026-08-14T14:19:14Z",
+      "current_evidence": "GitHub PR #3155 已合并；PR 给出 devnet 交易签名、生产 Facilitator 兼容性结果及 365 项 SVM 单元测试通过说明。",
+      "payment_landing_evidence": "SVM 客户端开通支付通道并由 Facilitator 对已交付资源执行 claim 结算；更新直接控制这些链上付款交易的计算预算、优先费和吞吐。",
+      "primary_tags": [
+        "x402",
+        "SVM",
+        "Payment Channel"
+      ],
+      "secondary_tags": [
+        "ComputeBudget",
+        "Facilitator",
+        "Priority Fee",
+        "Settlement"
+      ],
+      "why_it_matters_cn": "upto 支付的 claim 是已交付后收款，拥堵时丢失会形成已服务未收款窗口；预算与优先费控制直接影响成本、吞吐和结算可靠性。",
+      "potential_impact_on_lianlian_cn": "连连若运营链上 Facilitator，需要把计算预算、优先费、重试和过期窗口纳入结算 SLA、资金风险与监控，而不能仅验证协议签名。",
+      "product_opportunity_cn": "构建 Facilitator 交易策略模块，按链拥堵、金额、voucher 到期时间和 Token 扩展动态配置费用、重试与告警。",
+      "competitive_risk_cn": "x402 参考实现持续把链上结算运营经验固化为默认值，第三方 Facilitator 若缺少同等可靠性和成本策略，生产竞争力会被拉开。",
+      "recommended_action": "investigate",
+      "recommended_owner": [
+        "支付技术",
+        "资金结算",
+        "风控"
+      ],
+      "questions_to_validate": [
+        "静态限制在 Token-2022 transfer hook 等复杂资产下是否充足？",
+        "拥堵和 voucher 临近过期时优先费如何动态上调？",
+        "claim 失败后的商户补偿与对账责任如何定义？"
+      ],
+      "follow_up_triggers": [
+        "Facilitator 侧生产版本采用新默认值",
+        "出现主网高拥堵下的 claim 数据",
+        "支持动态模拟或多收款方结算"
+      ],
+      "related_sources": [
+        "https://github.com/x402-foundation/x402/commit/167a828e8319aa7b403f4f4312489e9cffadff10"
+      ],
+      "scores": {
+        "agentic_relevance": 5,
+        "payment_relevance": 5,
+        "infrastructure_value": 5,
+        "strategic_value": 4,
+        "source_quality": 5,
+        "lianlian_relevance": 4,
+        "cross_border_value": 3,
+        "merchant_value": 4,
+        "product_actionability": 5,
+        "competitive_impact": 4
+      },
+      "report_date": "2026-08-15",
+      "event_date": "2026-08-14",
+      "first_seen_date": "2026-08-15",
+      "last_seen_date": "2026-08-15",
+      "run_dates": [
+        "2026-08-15"
+      ]
+    },
+    {
+      "id": "x402-20260814-monad-usdc-v1-domain-fix-pr-3153",
+      "event_key": "x402:pr:3153:monad-usdc-v1-domain-fix",
+      "event_id": "PR-3153",
+      "demo": false,
+      "title": "x402 修复 Monad USDC v1 签名域错误导致的付款失败",
+      "summary": "x402 Foundation 合并 PR #3153，将 Go/Python v1 资产表中的 Monad USDC EIP-712 domain name 从 USD Coin 修正为 USDC。此前 v1 exact 客户端据此构造 EIP-3009 签名域，会导致链上签名恢复失败；修复已用部署合约的 name 与 DOMAIN_SEPARATOR 核验。",
+      "decision": "include",
+      "confidence": 98,
+      "relevance_level": "P1",
+      "signal_type": "core",
+      "content_type": "technical_update",
+      "information_type": "developer_ecosystem",
+      "evidence_level": "confirmed",
+      "source": "x402 Foundation GitHub",
+      "url": "https://github.com/x402-foundation/x402/pull/3153",
+      "canonical_url": "https://github.com/x402-foundation/x402/pull/3153",
+      "published_at": "2026-08-14T07:12:38Z",
+      "current_evidence": "GitHub PR #3153 已合并；维护者说明旧值令 Monad 上的 v1 payments 无法完成链上 signature recovery，并提供链上 domain 校验。",
+      "payment_landing_evidence": "x402 v1 exact 客户端使用 EIP-3009 签名执行 Monad USDC 付款；错误签名域会使付款链上验证失败，本次修复恢复该支付路径。",
+      "primary_tags": [
+        "x402",
+        "USDC",
+        "Monad"
+      ],
+      "secondary_tags": [
+        "EIP-712",
+        "EIP-3009",
+        "Payment Reliability",
+        "Go",
+        "Python"
+      ],
+      "why_it_matters_cn": "多链支付失败可能来自资产元数据而非余额或授权，且不同语言 SDK 可能表现不一致；Agent 自动付款需要可诊断、可回滚的资产注册表。",
+      "potential_impact_on_lianlian_cn": "连连若接入 x402 多链结算，应独立校验 token domain、合约地址、版本和 SDK 一致性，并把签名恢复失败纳入支付可观测性。",
+      "product_opportunity_cn": "建立多链资产元数据注册与上线前链上验证流水线，覆盖 DOMAIN_SEPARATOR、精度、合约版本、签名方案和回归支付。",
+      "competitive_risk_cn": "直接依赖协议默认表而无独立校验，会把上游配置错误传导为商户支付失败并损害生产 SLA。",
+      "recommended_action": "investigate",
+      "recommended_owner": [
+        "支付技术",
+        "质量保障",
+        "资金结算"
+      ],
+      "questions_to_validate": [
+        "历史失败付款能否识别并安全重试？",
+        "其他链和其他语言 SDK 是否存在同类 domain 漂移？",
+        "资产表更新如何做签名、版本和紧急回滚？"
+      ],
+      "follow_up_triggers": [
+        "发布包含修复的正式版本",
+        "出现历史失败量或生产事故披露",
+        "资产表增加自动链上校验"
+      ],
+      "related_sources": [],
+      "scores": {
+        "agentic_relevance": 5,
+        "payment_relevance": 5,
+        "infrastructure_value": 4,
+        "strategic_value": 3,
+        "source_quality": 5,
+        "lianlian_relevance": 4,
+        "cross_border_value": 3,
+        "merchant_value": 3,
+        "product_actionability": 5,
+        "competitive_impact": 3
+      },
+      "report_date": "2026-08-15",
+      "event_date": "2026-08-14",
+      "first_seen_date": "2026-08-15",
+      "last_seen_date": "2026-08-15",
+      "run_dates": [
+        "2026-08-15"
+      ]
+    },
     {
       "id": "x402-20260813-spend-controls-siwx-origin-batch",
       "event_key": "x402:engineering-batch:spend-controls-siwx-origin:2026-08-13",
