@@ -5,12 +5,13 @@ window.DAILY_HISTORY = {
     {
       "date": "2026-08-17",
       "signal_ids": [
+        "stripe-openrouter-acquisition-status-update-20260816",
         "ucp-20260814-payment-terms-pr-602",
         "x402-20260814-weekend-settlement-reliability-batch"
       ],
       "counts": {
-        "total": 2,
-        "P0": 0,
+        "total": 3,
+        "P0": 1,
         "P1": 2,
         "P2": 0
       }
@@ -155,6 +156,94 @@ window.DAILY_HISTORY = {
     }
   ],
   "signals": [
+    {
+      "id": "stripe-openrouter-acquisition-status-update-20260816",
+      "event_key": "stripe:openrouter:acquisition:2026-07-24",
+      "event_id": "stripe-openrouter-acquisition-rumor-2026",
+      "demo": false,
+      "title": "Stripe–OpenRouter 收购报道升级：从约 100 亿美元洽谈到逾 70 亿美元接近成交",
+      "summary": "7 月 24 日 WSJ 首次报道 Stripe 正洽谈收购 OpenRouter，潜在估值约 100 亿美元，谈判仍可能破裂或出现竞购者；8 月 16 日 Bloomberg 进一步报道称交易已接近达成/据称敲定，价格为逾 70 亿美元。TechCrunch 随后转述。双方官网尚无正式公告，因此这是同一事件的状态升级，不是新收购事件，也不能写成已经完成。",
+      "decision": "watchlist",
+      "confidence": 82,
+      "relevance_level": "P0",
+      "signal_type": "strategic_radar",
+      "content_type": "media_report",
+      "information_type": "funding_ma",
+      "evidence_level": "reported",
+      "source": "TechCrunch / Bloomberg",
+      "url": "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b/",
+      "canonical_url": "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b",
+      "published_at": "2026-08-16T20:31:16Z",
+      "current_evidence": "Bloomberg 8 月 16 日标题/报道将状态推进到接近达成或据称敲定，价格为逾 70 亿美元；TechCrunch 同日转述。Stripe Newsroom 与 OpenRouter 官方博客尚无确认。",
+      "primary_tags": [
+        "Stripe",
+        "OpenRouter",
+        "AI Gateway"
+      ],
+      "secondary_tags": [
+        "M&A",
+        "Agent Infrastructure",
+        "Usage Billing",
+        "Competitive Intelligence"
+      ],
+      "matched_reason": "同一收购事件出现实质证据增量：交易阶段从洽谈推进到据报道接近/达成，价格从潜在约 100 亿美元调整为逾 70 亿美元。",
+      "exclude_reason": "",
+      "why_it_matters_cn": "增量不在“Stripe 想买 OpenRouter”本身，而在交易完成概率提高和价格收敛。如果官方确认，Stripe 将从 Agent Checkout 与计费执行上移到模型路由、统一余额、API 用量和供应商结算入口。",
+      "potential_impact_on_lianlian_cn": "连连需要把竞争地图从 Checkout/收单扩展到 AI 网关和 API 计费入口，判断跨境开发者、AI SaaS 与模型供应商是否会被 Stripe 以统一路由、余额和支付账户绑定。",
+      "product_opportunity_cn": "评估面向 AI 平台与 Agent 开发者的跨境 API 计费、统一余额、多币种充值、供应商分账和全球 Payout 方案，并寻找不依赖单一模型网关的开放接口合作。",
+      "competitive_risk_cn": "Stripe 若获得 OpenRouter 的开发者入口和模型调用数据，可在客户形成商户关系之前绑定计费与资金账户，并将其 Agent Commerce 能力向上游分发；连连仅做后端支付通道的议价空间会被压缩。",
+      "who_should_care": [
+        "战略",
+        "创新产品",
+        "跨境收付",
+        "开发者平台",
+        "投研"
+      ],
+      "recommended_action": "alert",
+      "recommended_owner": [
+        "战略",
+        "创新产品",
+        "生态合作"
+      ],
+      "questions_to_validate": [
+        "Stripe 或 OpenRouter 是否正式确认交易、价格和交割条件？",
+        "OpenRouter 的统一余额、模型供应商结算和客户支付账户是否会迁移到 Stripe？",
+        "收购后是否把 Stripe Billing、Agentic Commerce 或 Shared Payment Tokens 接入 OpenRouter？"
+      ],
+      "follow_up_triggers": [
+        "Stripe 或 OpenRouter 发布官方公告或监管申报",
+        "OpenRouter 计费、余额、结算或服务条款发生实质变化",
+        "Stripe 在 OpenRouter 上线 Billing、Agent Checkout 或供应商 Payout 集成"
+      ],
+      "related_sources": [
+        "https://www.wsj.com/tech/ai/stripe-in-talks-to-buy-buzzy-ai-model-marketplace-openrouter-decc6a74",
+        "https://finance.yahoo.com/technology/ai/articles/stripe-talks-acquire-openrouter-potential-215104525.html",
+        "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
+        "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b/"
+      ],
+      "scores": {
+        "agentic_relevance": 4,
+        "payment_relevance": 3,
+        "infrastructure_value": 5,
+        "strategic_value": 5,
+        "source_quality": 4,
+        "lianlian_relevance": 5,
+        "cross_border_value": 3,
+        "merchant_value": 3,
+        "product_actionability": 4,
+        "competitive_impact": 5
+      },
+      "report_date": "2026-08-17",
+      "event_date": "2026-07-24",
+      "first_seen_date": "2026-08-17",
+      "last_seen_date": "2026-08-17",
+      "run_dates": [
+        "2026-08-17"
+      ],
+      "update_type": "deal_stage_update",
+      "first_reported_at": "2026-07-24T00:00:00Z",
+      "previous_reported_state": "WSJ：洽谈中，潜在约 100 亿美元；条款未定、可能破裂或出现竞购者。"
+    },
     {
       "id": "ucp-20260814-payment-terms-pr-602",
       "event_key": "ucp:pr:602:payment-terms",
