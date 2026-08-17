@@ -1,82 +1,146 @@
 [
   {
-    "id": "stripe-openrouter-reported-acquisition-20260816",
-    "event_key": "stripe:openrouter:reported-acquisition:2026-08-16",
-    "event_id": "bloomberg-2026-08-16-stripe-openrouter",
+    "id": "ucp-20260814-payment-terms-pr-602",
+    "event_key": "ucp:pr:602:payment-terms",
+    "event_id": "PR-602",
     "demo": false,
-    "title": "报道称 Stripe 将以逾 70 亿美元收购 AI 网关 OpenRouter",
-    "summary": "TechCrunch 援引 Bloomberg 报道称，Stripe 将以逾 70 亿美元收购 AI 模型路由与计费网关 OpenRouter。Stripe 与 OpenRouter 官网在本次核验时均未见正式公告，因此交易状态标记为 reported，不表述为已经完成。",
-    "decision": "watchlist",
-    "confidence": 78,
-    "relevance_level": "P0",
-    "signal_type": "strategic_radar",
-    "content_type": "media_report",
-    "information_type": "funding_ma",
-    "evidence_level": "reported",
-    "source": "TechCrunch / Bloomberg",
-    "url": "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b/",
-    "canonical_url": "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b",
-    "published_at": "2026-08-16T20:57:04Z",
-    "current_evidence": "TechCrunch 于 2026-08-16 20:57 UTC 发布具名报道并明确援引 Bloomberg；Bloomberg 标题称 Stripe 接近/达成逾 70 亿美元交易。核验 Stripe Newsroom 与 OpenRouter 公告入口时未见双方正式确认。",
-    "payment_landing_evidence": "本事件不声称已有新增支付链路；其收录依据是 Strategic Radar：Stripe 若控制 OpenRouter 的模型路由、统一余额与用量计费入口，可能把 AI/Agent 调用入口与现有支付及商户关系合并。",
+    "title": "UCP 合并 Payment Terms，支持 Agent 在结账中选择定金、延期与分期计划",
+    "summary": "Universal Commerce Protocol 合并 PR #602，新增 dev.ucp.shopping.payment_terms：商户可在同一 Checkout 提供立即全额、定金后付余额或分期等条款，Buyer/Agent 选择后由商户重新计算结账；成交订单保留 accepted_term 与绝对到期时间。",
+    "decision": "include",
+    "confidence": 98,
+    "relevance_level": "P1",
+    "signal_type": "core",
+    "content_type": "technical_update",
+    "information_type": "protocol_standard",
+    "evidence_level": "confirmed",
+    "source": "Universal Commerce Protocol GitHub",
+    "url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/602",
+    "canonical_url": "https://github.com/Universal-Commerce-Protocol/ucp/pull/602",
+    "published_at": "2026-08-14T17:04:32Z",
+    "current_evidence": "GitHub PR #602 于 2026-08-14 合并；PR 正文和 schema 说明 terms、selected_term_id、accepted_term、schedule amount 与 due_at 的协议行为。",
+    "payment_landing_evidence": "商户在 Checkout 报出付款条款，Buyer/Agent 选择付款计划，订单保存已接受条款及每期金额和到期时间，形成可执行的收款时序。",
     "primary_tags": [
-      "Stripe",
-      "OpenRouter",
-      "AI Gateway"
+      "UCP",
+      "Agent Checkout",
+      "Payment Terms"
     ],
     "secondary_tags": [
-      "M&A",
-      "Agent Infrastructure",
-      "Usage Billing",
-      "Competitive Intelligence"
+      "Deposit",
+      "Installments",
+      "Deferred Payment",
+      "Merchant"
     ],
-    "matched_reason": "头部 PSP 被报道收购 AI 模型网关，可能直接改变 Agent 基础设施入口、开发者计费关系与支付分发控制权。",
-    "exclude_reason": "",
-    "why_it_matters_cn": "如果交易获官方确认，Stripe 将不只在 Agent Checkout 执行支付，还可能进入 Agent 选择模型、调用 API、归集用量与充值结算的上游入口；这会把支付账户、开发者余额和 AI 流量路由集中到同一平台。",
-    "potential_impact_on_lianlian_cn": "连连需要把竞争地图从 Checkout/收单扩展到 AI 网关和 API 计费入口，判断跨境开发者、AI SaaS 与模型供应商是否会被 Stripe 以统一路由、余额和支付账户绑定。",
-    "product_opportunity_cn": "评估面向 AI 平台与 Agent 开发者的跨境 API 计费、统一余额、多币种充值、供应商分账和全球 Payout 方案，并寻找不依赖单一模型网关的开放接口合作。",
-    "competitive_risk_cn": "Stripe 若获得 OpenRouter 的开发者入口和模型调用数据，可在客户形成商户关系之前绑定计费与资金账户，并将其 Agent Commerce 能力向上游分发；连连仅做后端支付通道的议价空间会被压缩。",
-    "who_should_care": [
-      "战略",
-      "创新产品",
-      "跨境收付",
-      "开发者平台",
-      "投研"
-    ],
-    "recommended_action": "alert",
+    "why_it_matters_cn": "UCP 从一次性结账扩展到付款时间和条款协商，Agent 不仅选择商品和支付工具，还要理解并接受未来付款义务。",
+    "potential_impact_on_lianlian_cn": "连连的收单、订单、授权、分期、后续扣款与对账模型可能需要承接 UCP 的 term/schedule 语义，并保留 Agent 接受条款的审计证据。",
+    "product_opportunity_cn": "建立 UCP Payment Terms 到支付计划、后续扣款授权、到期提醒、失败重试、退款和对账字段的映射 PoC。",
+    "competitive_risk_cn": "若 UCP 与平台先控制付款条款协商，PSP 可能只执行后续扣款，难以掌握 Agent 与商户的结账决策入口。",
+    "recommended_action": "investigate",
     "recommended_owner": [
-      "战略",
-      "创新产品",
-      "生态合作"
+      "产品",
+      "支付技术",
+      "风控合规"
     ],
     "questions_to_validate": [
-      "Stripe 或 OpenRouter 是否正式确认交易、价格和交割条件？",
-      "OpenRouter 的统一余额、模型供应商结算和客户支付账户是否会迁移到 Stripe？",
-      "收购后是否把 Stripe Billing、Agentic Commerce 或 Shared Payment Tokens 接入 OpenRouter？"
+      "selected_term 是否构成后续扣款的充分授权？",
+      "分期失败、部分退款和争议如何映射到 schedule？",
+      "跨境场景的币种、利息披露和消费者信贷责任由谁承担？"
     ],
     "follow_up_triggers": [
-      "Stripe 或 OpenRouter 发布官方公告或监管申报",
-      "OpenRouter 计费、余额、结算或服务条款发生实质变化",
-      "Stripe 在 OpenRouter 上线 Billing、Agent Checkout 或供应商 Payout 集成"
+      "Payment Terms 进入稳定版或主流平台实现",
+      "补充 instrument-to-schedule 绑定",
+      "出现商户生产接入或延期扣款案例"
     ],
-    "related_sources": [
-      "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
-      "https://news.ycombinator.com/item?id=49323381"
-    ],
+    "related_sources": [],
     "scores": {
-      "agentic_relevance": 4,
-      "payment_relevance": 3,
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
       "infrastructure_value": 5,
       "strategic_value": 5,
-      "source_quality": 4,
+      "source_quality": 5,
       "lianlian_relevance": 5,
       "cross_border_value": 3,
-      "merchant_value": 3,
-      "product_actionability": 4,
+      "merchant_value": 5,
+      "product_actionability": 5,
       "competitive_impact": 5
     },
+    "event_date": "2026-08-15",
     "report_date": "2026-08-17",
-    "event_date": "2026-08-17",
+    "first_seen_date": "2026-08-17",
+    "last_seen_date": "2026-08-17",
+    "run_dates": [
+      "2026-08-17"
+    ]
+  },
+  {
+    "id": "x402-20260814-weekend-settlement-reliability-batch",
+    "event_key": "x402:weekend-batch:svm-settlement-monad-signing:2026-08-14",
+    "event_id": "PR-3155+PR-3153",
+    "demo": false,
+    "title": "x402 同批修复 SVM 结算可靠性与 Monad USDC 付款失败",
+    "summary": "x402 Foundation 在周五合并两项支付可靠性更新：PR #3155 为 SVM upto 的 open、claim/cancel 与租金回收加入计算预算和优先费控制，并披露与生产 Facilitator 的 open→serve→claim 兼容性实测；PR #3153 修正 Monad USDC v1 的 EIP-712 domain name，解决 Go/Python exact 付款的链上签名恢复失败。",
+    "decision": "include",
+    "confidence": 98,
+    "relevance_level": "P1",
+    "signal_type": "core",
+    "content_type": "technical_update",
+    "information_type": "developer_ecosystem",
+    "evidence_level": "confirmed",
+    "source": "x402 Foundation GitHub",
+    "url": "https://github.com/x402-foundation/x402/pull/3155",
+    "canonical_url": "https://github.com/x402-foundation/x402/pull/3155",
+    "published_at": "2026-08-14T14:19:14Z",
+    "event_date": "2026-08-14",
+    "current_evidence": "GitHub PR #3155 与 #3153 均已合并；前者给出 devnet 交易、生产 Facilitator 兼容性与单元测试结果，后者以部署合约 name 和 DOMAIN_SEPARATOR 核验签名域修复。",
+    "payment_landing_evidence": "SVM upto 的 open→serve→claim 是实际服务交付后的收款结算流程；Monad USDC v1 exact 使用 EIP-3009 签名执行付款，错误 domain 会直接导致链上付款失败。",
+    "primary_tags": [
+      "x402",
+      "Payment Reliability",
+      "SVM"
+    ],
+    "secondary_tags": [
+      "Facilitator",
+      "Settlement",
+      "USDC",
+      "Monad",
+      "EIP-712"
+    ],
+    "why_it_matters_cn": "两项更新覆盖机器支付的两个生产故障面：结算交易在拥堵下的费用与吞吐，以及多链资产元数据错误造成的签名失败。Agent 自动付款需要同时保证交易能被及时打包和签名能被正确验证。",
+    "potential_impact_on_lianlian_cn": "连连若运营或接入 x402 Facilitator，需要把计算预算、优先费、重试、过期窗口、多链 token domain 与跨 SDK 一致性纳入结算 SLA 和支付可观测性。",
+    "product_opportunity_cn": "建立统一 Facilitator 可靠性 PoC：按拥堵和 voucher 到期时间调整费用，验证 open/claim/cancel，维护经链上验证的资产元数据注册表，并支持失败诊断和紧急回滚。",
+    "competitive_risk_cn": "参考实现正在把链上结算运营经验和资产兼容修复固化为默认能力；缺少独立校验与动态费用策略的 PSP 会暴露已服务未收款和商户支付失败风险。",
+    "recommended_action": "investigate",
+    "recommended_owner": [
+      "支付技术",
+      "资金结算",
+      "质量保障"
+    ],
+    "questions_to_validate": [
+      "主网拥堵时 claim 的成功率、费用和过期风险如何？",
+      "历史 Monad USDC v1 失败付款能否识别并安全重试？",
+      "其他链、资产和 SDK 是否存在同类 domain 漂移？"
+    ],
+    "follow_up_triggers": [
+      "正式版本包含两项修复",
+      "公开主网 Facilitator 结算数据",
+      "资产表增加自动链上校验与回滚"
+    ],
+    "related_sources": [
+      "https://github.com/x402-foundation/x402/pull/3153",
+      "https://github.com/x402-foundation/x402/commit/167a828e8319aa7b403f4f4312489e9cffadff10"
+    ],
+    "scores": {
+      "agentic_relevance": 5,
+      "payment_relevance": 5,
+      "infrastructure_value": 5,
+      "strategic_value": 4,
+      "source_quality": 5,
+      "lianlian_relevance": 4,
+      "cross_border_value": 3,
+      "merchant_value": 4,
+      "product_actionability": 5,
+      "competitive_impact": 4
+    },
+    "report_date": "2026-08-17",
     "first_seen_date": "2026-08-17",
     "last_seen_date": "2026-08-17",
     "run_dates": [
