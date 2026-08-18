@@ -5,17 +5,14 @@
     {
       "date": "2026-08-18",
       "signal_ids": [
-        "x402-pr-3083-settlement-pending-state",
-        "x402-pr-3141-svm-upto-go-sdk",
-        "x402-pr-3183-svm-rpc-client-injection",
-        "x402-pr-3180-missing-accepted-requirements",
+        "x402-batch-20260817-settlement-upto-reliability",
         "stripe-20260817-multicurrency-settlement-instant-fx",
         "binance-pay-dk-bank-bhutan-3700-merchants-20260817"
       ],
       "counts": {
-        "total": 6,
+        "total": 3,
         "P0": 0,
-        "P1": 4,
+        "P1": 1,
         "P2": 2
       }
     },
@@ -174,12 +171,12 @@
   ],
   "signals": [
     {
-      "id": "x402-pr-3083-settlement-pending-state",
-      "event_key": "x402:pr:3083:settlement-pending",
-      "event_id": "PR-3083",
+      "id": "x402-batch-20260817-settlement-upto-reliability",
+      "event_key": "x402:batch:2026-08-17:settlement-upto-reliability",
+      "event_id": "PR-3083+PR-3141+PR-3183+PR-3180",
       "demo": false,
-      "title": "x402 PR #3083 增加 settlement_pending，降低回执超时引发重复付款风险",
-      "summary": "x402 Foundation 合并 PR #3083：EVM exact、upto 与批量结算在交易已广播但暂时取不到回执时，不再直接判为终局失败，而是返回 settlement_pending 和有效交易哈希，供调用方先对账再决定是否重试。",
+      "title": "x402 同批完善结算未知态、Solana 按量支付与 Facilitator 可靠性",
+      "summary": "x402 Foundation 同批合并四项支付工程更新：PR #3083 引入 settlement_pending 与交易哈希，避免回执超时被误判失败并触发重复付款；#3141 将 SVM upto 按量结算引入 Go SDK；#3183 允许 Facilitator 注入自有 RPC 客户端以支持限速、重试和监控；#3180 修复缺失 accepted requirements 导致的支付协商运行时异常。",
       "decision": "include",
       "confidence": 98,
       "relevance_level": "P1",
@@ -192,128 +189,57 @@
       "canonical_url": "https://github.com/x402-foundation/x402/pull/3083",
       "published_at": "2026-08-17T21:06:47Z",
       "event_date": "2026-08-18",
-      "current_evidence": "GitHub PR #3083 已于 2026-08-17T21:06:47Z 合并；PR 正文明确覆盖 TypeScript、Go、Python 的回执等待异常、有效广播哈希和批量结算测试。",
-      "payment_landing_evidence": "Facilitator 已广播 EVM 结算交易但回执暂不可得时返回 pending 与交易哈希，调用方据此核对链上付款状态，避免把可能已完成的支付再次提交。",
+      "current_evidence": "GitHub PR #3083、#3141、#3183、#3180 均已合并并保留独立事件 ID；#3141 尚未进入正式版本，#3183 的生产使用情况来自提交者披露。",
+      "payment_landing_evidence": "四项更新共同覆盖机器支付的协商、预算上限、按实际用量 claim、交易广播、回执未知态、RPC 提交运维和租金回收，形成可执行且可恢复的支付结算链路。",
       "primary_tags": [
         "x402",
         "Settlement",
-        "Payment Reliability"
-      ],
-      "secondary_tags": [
-        "EVM",
-        "Reconciliation",
-        "Idempotency",
-        "Facilitator"
-      ],
-      "matched_reason": "直接改变机器支付结算状态机和重试安全性。",
-      "exclude_reason": "",
-      "why_it_matters_cn": "自动付款最危险的失败不是明确拒绝，而是交易可能已上链、调用方却收到超时。pending 状态与可对账哈希把未知结果从终局失败中分离，减少 Agent 或 Facilitator 重复付款。",
-      "potential_impact_on_lianlian_cn": "连连接入链上机器支付时，需要在支付状态、对账、重试和商户通知中支持 pending/unknown，不应把 RPC 超时等同于付款失败。",
-      "product_opportunity_cn": "为 x402 Facilitator 建立 pending 交易观察器、链上回执补偿查询、幂等重试闸门和商户侧状态通知。",
-      "competitive_risk_cn": "若参考 Facilitator 先形成安全的未知状态处理，缺少链上对账和幂等策略的支付服务会承担重复扣款及争议风险。",
-      "who_should_care": [
-        "支付技术",
-        "资金结算",
-        "风险",
-        "对账"
-      ],
-      "recommended_action": "investigate",
-      "recommended_owner": [
-        "支付技术",
-        "资金结算",
-        "质量保障"
-      ],
-      "questions_to_validate": [
-        "pending 多久后可安全转为失败？",
-        "跨链和批量结算如何定义最终性与重试窗口？",
-        "商户订单状态如何映射 settlement_pending？"
-      ],
-      "follow_up_triggers": [
-        "正式版本发布包含 PR #3083",
-        "Facilitator 公布 pending 处理 SLA",
-        "出现主网回执超时或重复支付案例"
-      ],
-      "related_sources": [],
-      "scores": {
-        "agentic_relevance": 5,
-        "payment_relevance": 5,
-        "infrastructure_value": 5,
-        "strategic_value": 5,
-        "source_quality": 5,
-        "lianlian_relevance": 5,
-        "cross_border_value": 3,
-        "merchant_value": 4,
-        "product_actionability": 5,
-        "competitive_impact": 4
-      },
-      "report_date": "2026-08-18",
-      "first_seen_date": "2026-08-18",
-      "last_seen_date": "2026-08-18",
-      "run_dates": [
-        "2026-08-18"
-      ]
-    },
-    {
-      "id": "x402-pr-3141-svm-upto-go-sdk",
-      "event_key": "x402:pr:3141:svm-upto-go-sdk",
-      "event_id": "PR-3141",
-      "demo": false,
-      "title": "x402 PR #3141 将 Solana upto 引入 Go SDK，补齐按实际用量结算与租金回收",
-      "summary": "x402 Foundation 合并 PR #3141：Go SDK 新增 SVM upto 的客户端、服务端和 Facilitator，实现客户端托管付款上限、服务端按实际用量签 voucher、Facilitator 代付费用并结算，同时补齐持久化、通道发现、清理与租金回收。",
-      "decision": "include",
-      "confidence": 98,
-      "relevance_level": "P1",
-      "signal_type": "core",
-      "content_type": "technical_update",
-      "information_type": "developer_ecosystem",
-      "evidence_level": "confirmed",
-      "source": "x402 Foundation GitHub",
-      "url": "https://github.com/x402-foundation/x402/pull/3141",
-      "canonical_url": "https://github.com/x402-foundation/x402/pull/3141",
-      "published_at": "2026-08-17T21:03:08Z",
-      "event_date": "2026-08-18",
-      "current_evidence": "GitHub PR #3141 已合并；正文列明 Go/TypeScript 跨 SDK e2e、SVM upto 四方流程、持久化前置、链上发现、租金清理和稳定币资产注册表。能力仍标注为尚未正式发布。",
-      "payment_landing_evidence": "客户先托管可支付上限，服务端按计量金额签署 voucher，Facilitator 联签并广播 claim，最后回收支付通道租金，形成可执行的按用量收付与结算链路。",
-      "primary_tags": [
-        "x402",
-        "SVM",
         "Usage-based Payment"
       ],
       "secondary_tags": [
-        "Go SDK",
-        "Payment Channel",
+        "SVM",
+        "EVM",
         "Facilitator",
-        "Rent Recovery"
+        "RPC",
+        "Reconciliation",
+        "Protocol Reliability"
       ],
-      "matched_reason": "直接扩展 Agent/机器服务按实际用量结算的跨 SDK 实现。",
+      "matched_reason": "同一协议同一批次围绕按量支付和结算可靠性的工程更新，合并为一条综合信号并保留全部 PR。",
       "exclude_reason": "",
-      "why_it_matters_cn": "upto 将预授权上限与最终按量结算分开，适合 Agent 无法预先知道服务成本的调用；Go SDK 补齐后，服务端和 Facilitator 的实现门槛下降。",
-      "potential_impact_on_lianlian_cn": "连连需要评估预授权上限、计量凭证、最终扣款、通道租金和退款/争议如何映射到现有支付、账单与对账体系。",
-      "product_opportunity_cn": "搭建 Go/TypeScript 互操作 PoC，验证 open→meter→claim→reclaim 全流程、上限控制、异常恢复和多币种资产注册。",
-      "competitive_risk_cn": "x402 正把按量支付、费用代付和运营恢复固化进多语言 SDK；只提供一次性 exact 付款的方案会落后于复杂 Agent 服务计费。",
+      "why_it_matters_cn": "x402 正从“能发起付款”推进到可运营的生产支付状态机：未知结果可对账、按量付款可跨 SDK 执行、链上提交可纳入 RPC 运维控制，畸形 Agent 请求也可稳定恢复。",
+      "potential_impact_on_lianlian_cn": "连连接入机器支付时需同时设计 pending/unknown 状态、幂等重试、预算上限与计量凭证、RPC 故障切换、跨 SDK 一致性和稳定错误语义。",
+      "product_opportunity_cn": "建立 x402 综合 PoC，覆盖 open→meter→claim→reconcile→reclaim，全链路验证回执补偿、重复支付防护、多 RPC 路由和异常输入恢复。",
+      "competitive_risk_cn": "参考实现正把生产运营经验固化进多语言 SDK；仅支持一次性付款或正常路径的方案会在按量计费、链上对账和故障恢复方面落后。",
       "who_should_care": [
         "支付技术",
+        "资金结算",
         "开发者平台",
-        "计费产品",
-        "资金结算"
+        "SRE",
+        "质量保障"
       ],
       "recommended_action": "investigate",
       "recommended_owner": [
         "支付技术",
-        "创新产品",
+        "资金结算",
         "开发者平台"
       ],
       "questions_to_validate": [
-        "服务端计量结果由谁审计和争议？",
-        "通道上限与用户预算授权如何绑定？",
-        "主网租金、拥堵和清理失败的成本是多少？"
+        "settlement_pending 多久后可安全转为失败？",
+        "预算上限与用户授权、服务端计量和争议如何绑定？",
+        "RPC 故障切换能否保持交易幂等并避免 voucher/blockhash 过期？",
+        "错误码能否跨 SDK 和协议版本保持一致？"
       ],
       "follow_up_triggers": [
-        "包含 PR #3141 的正式版本发布",
+        "正式版本同时包含相关 PR",
         "公开主网 upto 交易或商户案例",
+        "Facilitator 披露 pending 与 RPC 提交 SLA",
         "增加退款、争议或跨币种结算语义"
       ],
-      "related_sources": [],
+      "related_sources": [
+        "https://github.com/x402-foundation/x402/pull/3141",
+        "https://github.com/x402-foundation/x402/pull/3183",
+        "https://github.com/x402-foundation/x402/pull/3180"
+      ],
       "scores": {
         "agentic_relevance": 5,
         "payment_relevance": 5,
@@ -326,164 +252,12 @@
         "product_actionability": 5,
         "competitive_impact": 5
       },
-      "report_date": "2026-08-18",
-      "first_seen_date": "2026-08-18",
-      "last_seen_date": "2026-08-18",
-      "run_dates": [
-        "2026-08-18"
-      ]
-    },
-    {
-      "id": "x402-pr-3183-svm-rpc-client-injection",
-      "event_key": "x402:pr:3183:svm-rpc-client-injection",
-      "event_id": "PR-3183",
-      "demo": false,
-      "title": "x402 PR #3183 允许 SVM upto Facilitator 注入自有 RPC 客户端",
-      "summary": "x402 Foundation 合并 PR #3183：SVM upto Facilitator 与租金清理器可注入预构建 RPC 客户端，使运营方能对 sendTransaction 做限速、重试、专用请求头和监控；提交者说明其下游生产环境已使用该模式。",
-      "decision": "include",
-      "confidence": 97,
-      "relevance_level": "P1",
-      "signal_type": "core",
-      "content_type": "technical_update",
-      "information_type": "product_capability",
-      "evidence_level": "confirmed",
-      "source": "x402 Foundation GitHub",
-      "url": "https://github.com/x402-foundation/x402/pull/3183",
-      "canonical_url": "https://github.com/x402-foundation/x402/pull/3183",
-      "published_at": "2026-08-17T11:14:22Z",
-      "event_date": "2026-08-17",
-      "current_evidence": "GitHub PR #3183 已合并，新增可选 rpc 配置且保持 rpcUrl 向后兼容；PR 报告 @x402/svm 365/365 测试通过。生产使用情况来自提交者具名披露。",
-      "payment_landing_evidence": "运营方可把 Facilitator 的通道 claim、cleanup 和 sendTransaction 接入具有限速、重试与监控的 RPC 传输，直接提高机器支付结算提交成功率。",
-      "primary_tags": [
-        "x402",
-        "Facilitator",
-        "SVM"
+      "related_event_ids": [
+        "PR-3083",
+        "PR-3141",
+        "PR-3183",
+        "PR-3180"
       ],
-      "secondary_tags": [
-        "RPC",
-        "Rate Limit",
-        "Observability",
-        "Settlement Operations"
-      ],
-      "matched_reason": "把支付 Facilitator 的交易发送纳入生产级运营控制。",
-      "exclude_reason": "",
-      "why_it_matters_cn": "Facilitator 不是只签交易，还要在 RPC 限额与链拥堵下稳定提交。允许注入运营方客户端，意味着限速、重试和可观测性可成为支付 SLA 的一部分。",
-      "potential_impact_on_lianlian_cn": "若连连运营 Facilitator，需要统一管理 RPC 供应商、发送速率、重试、追踪和故障切换，而不是依赖 SDK 内部黑盒连接。",
-      "product_opportunity_cn": "构建多 RPC 路由、速率控制、交易追踪和告警层，并将 claim/cleanup 的成功率与资金风险纳入运营看板。",
-      "competitive_risk_cn": "生产运营经验正在快速进入参考 SDK；没有专用链上支付运维层的接入方会在高峰期暴露结算与租金回收故障。",
-      "who_should_care": [
-        "支付技术",
-        "SRE",
-        "资金结算"
-      ],
-      "recommended_action": "investigate",
-      "recommended_owner": [
-        "支付技术",
-        "SRE",
-        "质量保障"
-      ],
-      "questions_to_validate": [
-        "RPC 故障切换是否保持交易幂等？",
-        "限速重试会否超过 voucher 或 blockhash 有效期？",
-        "生产披露是否有可核验 SLA 数据？"
-      ],
-      "follow_up_triggers": [
-        "正式版本发布包含 PR #3183",
-        "出现多 RPC 故障切换实现",
-        "披露生产 Facilitator 的发送成功率"
-      ],
-      "related_sources": [],
-      "scores": {
-        "agentic_relevance": 5,
-        "payment_relevance": 5,
-        "infrastructure_value": 4,
-        "strategic_value": 4,
-        "source_quality": 5,
-        "lianlian_relevance": 4,
-        "cross_border_value": 2,
-        "merchant_value": 3,
-        "product_actionability": 5,
-        "competitive_impact": 4
-      },
-      "report_date": "2026-08-18",
-      "first_seen_date": "2026-08-18",
-      "last_seen_date": "2026-08-18",
-      "run_dates": [
-        "2026-08-18"
-      ]
-    },
-    {
-      "id": "x402-pr-3180-missing-accepted-requirements",
-      "event_key": "x402:pr:3180:missing-accepted-requirements",
-      "event_id": "PR-3180",
-      "demo": false,
-      "title": "x402 PR #3180 修复缺失 accepted 字段导致的支付协商运行时异常",
-      "summary": "x402 Foundation 合并 PR #3180：TypeScript 核心库在 v1/v2 请求缺失或传入 null 的 accepted requirements 时返回稳定协议错误，不再泄漏由客户端输入触发的 TypeError，并增加四种端到端 HTTP 回归测试。",
-      "decision": "include",
-      "confidence": 98,
-      "relevance_level": "P1",
-      "signal_type": "core",
-      "content_type": "technical_update",
-      "information_type": "product_capability",
-      "evidence_level": "confirmed",
-      "source": "x402 Foundation GitHub",
-      "url": "https://github.com/x402-foundation/x402/pull/3180",
-      "canonical_url": "https://github.com/x402-foundation/x402/pull/3180",
-      "published_at": "2026-08-17T08:32:00Z",
-      "event_date": "2026-08-17",
-      "current_evidence": "GitHub PR #3180 已合并；PR 明确覆盖协议 v1/v2、omitted/null accepted 值，并报告 TypeScript 55/55 测试任务通过。",
-      "payment_landing_evidence": "客户端提交支付 requirements 选择时，即使 accepted 缺失或为空，服务端也返回可处理的协议错误而非运行时崩溃，保障付款协商链路可恢复。",
-      "primary_tags": [
-        "x402",
-        "Payment Requirements",
-        "Protocol Reliability"
-      ],
-      "secondary_tags": [
-        "TypeScript",
-        "Error Handling",
-        "v1",
-        "v2"
-      ],
-      "matched_reason": "直接修复付款条件协商中的客户端输入故障。",
-      "exclude_reason": "",
-      "why_it_matters_cn": "Agent 生成的协议请求可能缺字段或版本不一致。稳定错误码让调用方可修正或选择其他付款要求，避免一次畸形请求把支付服务打成 500。",
-      "potential_impact_on_lianlian_cn": "Agent-facing 支付 API 需要把协议校验、版本兼容和稳定错误语义纳入网关标准，避免客户端输入演变为服务故障。",
-      "product_opportunity_cn": "建立 x402 v1/v2 模糊测试与错误码映射，覆盖缺失、null、空数组及不支持付款要求。",
-      "competitive_risk_cn": "参考实现持续加固不可信 Agent 输入；若连连接口只验证正常路径，会影响接入稳定性和开发者体验。",
-      "who_should_care": [
-        "支付技术",
-        "API 平台",
-        "质量保障"
-      ],
-      "recommended_action": "investigate",
-      "recommended_owner": [
-        "支付技术",
-        "API 平台",
-        "质量保障"
-      ],
-      "questions_to_validate": [
-        "其他 requirements 字段是否有同类 null/缺失缺陷？",
-        "错误码能否跨 SDK 保持一致？",
-        "客户端应在何时重试或重新协商？"
-      ],
-      "follow_up_triggers": [
-        "正式版本包含 PR #3180",
-        "新增跨 SDK 错误一致性测试",
-        "公开畸形 Agent 请求的生产故障案例"
-      ],
-      "related_sources": [],
-      "scores": {
-        "agentic_relevance": 5,
-        "payment_relevance": 5,
-        "infrastructure_value": 4,
-        "strategic_value": 4,
-        "source_quality": 5,
-        "lianlian_relevance": 4,
-        "cross_border_value": 2,
-        "merchant_value": 4,
-        "product_actionability": 5,
-        "competitive_impact": 3
-      },
       "report_date": "2026-08-18",
       "first_seen_date": "2026-08-18",
       "last_seen_date": "2026-08-18",
