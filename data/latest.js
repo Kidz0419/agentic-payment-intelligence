@@ -92,6 +92,108 @@ window.DAILY_SIGNALS = [
     ]
   },
   {
+    "id": "stripe-openrouter-acquisition-status-update-20260816",
+    "event_key": "stripe:openrouter:acquisition:2026-07-24",
+    "event_id": "stripe-openrouter-acquisition-rumor-2026",
+    "demo": false,
+    "title": "Stripe 官方同意收购 OpenRouter，投资人信揭示 AI Token 支出与模型路由战略",
+    "summary": "Stripe 于 8 月 19 日官方宣布已同意收购 OpenRouter，将其 400+ 模型、80+ 供应商的动态路由能力与 Stripe 的 Token Billing、收入优化和 Token 成本管理结合，帮助 AI 企业同时提升收入/效能并降低成本。另据 Eric Newcomer 披露、TechCrunch 核验的 Collison 兄弟致投资人信，Stripe 将 1 月 1 日视作“奇点”开端，并称 OpenRouter 与 Stripe 的开发者客户高度重合。交易价格和正式交割条件未由 Stripe 披露，不能写成已经完成收购。",
+    "decision": "include",
+    "confidence": 97,
+    "relevance_level": "P0",
+    "signal_type": "strategic_radar",
+    "content_type": "official_announcement",
+    "information_type": "funding_ma",
+    "evidence_level": "confirmed",
+    "source": "Stripe Newsroom / TechCrunch",
+    "url": "https://stripe.com/newsroom/news/stripe-agrees-to-acquire-openrouter",
+    "canonical_url": "https://stripe.com/newsroom/news/stripe-agrees-to-acquire-openrouter",
+    "published_at": "2026-08-19T00:00:00-07:00",
+    "current_evidence": "Stripe Newsroom 8 月 19 日明确使用“agreed to acquire”，确认双方已达成收购协议，但未披露价格、条款和交割完成状态。官方说明 OpenRouter 覆盖 400+ 模型、80+ 供应商，并将与 Stripe 的 Token Billing、Token 成本及请求路由能力结合。所谓“奇点”来自泄露的投资人信，不是 Stripe 官网公开信；TechCrunch 表示该信由 Eric Newcomer 发布并经其核验。",
+    "primary_tags": [
+      "Stripe",
+      "OpenRouter",
+      "AI Gateway"
+    ],
+    "secondary_tags": [
+      "M&A",
+      "Agent Infrastructure",
+      "Usage Billing",
+      "Competitive Intelligence"
+    ],
+    "matched_reason": "同一收购事件出现两项实质增量：交易由媒体称接近达成升级为 Stripe 官方确认“已同意收购”；官方首次明确 Token Billing、模型路由、成本/效能优化的整合方向。",
+    "exclude_reason": "",
+    "why_it_matters_cn": "这次变化不只是交易确定性提高。Stripe 官方把“经济基础设施”从收入与支付执行扩展到 AI Token 的选择、路由、计费和支出效率：谁控制模型调用入口，谁就更早看到 Agent/AI 企业的用量、成本与资金流，并可把 Billing、余额、结算和供应商关系串成闭环。",
+    "potential_impact_on_lianlian_cn": "竞争边界从 Checkout/收单上移到 AI 网关和 Token 支出层。Stripe 可在开发者选择模型与形成用量成本时提前绑定 Token Billing 和经济账户；连连若只在末端提供支付通道，将更难掌握 AI 企业的预算、供应商结算和跨境资金编排入口。",
+    "product_opportunity_cn": "建立面向 AI 平台的“模型用量—预算—充值/授信—供应商结算—多币种 FX—Payout”能力地图；优先验证开放、模型中立的跨境 Token 账单和供应商结算接口，而不是复制封闭式模型路由器。",
+    "competitive_risk_cn": "OpenRouter 为 Stripe 提供模型需求入口、用量信号和对模型供应商/云厂商的议价杠杆；一旦与 Billing、Treasury、Connect 或 Agent 支付结合，Stripe 可能同时控制 AI 企业的收入端、支出端和开发入口。当前这些进一步产品整合仍是战略推断，不能写成已上线。",
+    "who_should_care": [
+      "战略",
+      "创新产品",
+      "跨境收付",
+      "开发者平台",
+      "投研"
+    ],
+    "recommended_action": "alert",
+    "recommended_owner": [
+      "战略",
+      "创新产品",
+      "开发者平台",
+      "跨境资金产品"
+    ],
+    "questions_to_validate": [
+      "交易何时交割，是否受监管或其他成交条件约束？",
+      "OpenRouter 的统一余额、模型供应商结算和客户支付账户是否迁移或接入 Stripe？",
+      "Token Billing 与 OpenRouter 路由何时出现可见产品整合？",
+      "OpenRouter 是否继续保持模型和支付供应商中立？"
+    ],
+    "follow_up_triggers": [
+      "Stripe 或 OpenRouter 宣布交割完成",
+      "披露正式价格、条款或监管文件",
+      "OpenRouter 上线 Stripe Billing、余额、支出控制或供应商结算",
+      "Stripe 发布 Agent/AI Token 预算与支付产品"
+    ],
+    "related_sources": [
+      "https://www.wsj.com/tech/ai/stripe-in-talks-to-buy-buzzy-ai-model-marketplace-openrouter-decc6a74",
+      "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
+      "https://techcrunch.com/2026/08/16/stripe-will-reportedly-acquire-ai-gateway-startup-openrouter-for-7b/",
+      "https://stripe.com/newsroom/news/stripe-agrees-to-acquire-openrouter",
+      "https://techcrunch.com/2026/08/19/stripe-didnt-really-buy-openrouter-because-of-the-singularity/",
+      "https://www.axios.com/2026/08/19/stripe-payments-openrouter-singularity",
+      "https://www.techflowpost.com/article/33389"
+    ],
+    "scores": {
+      "agentic_relevance": 4,
+      "payment_relevance": 3,
+      "infrastructure_value": 5,
+      "strategic_value": 5,
+      "source_quality": 4,
+      "lianlian_relevance": 5,
+      "cross_border_value": 3,
+      "merchant_value": 3,
+      "product_actionability": 4,
+      "competitive_impact": 5
+    },
+    "report_date": "2026-08-20",
+    "event_date": "2026-07-24",
+    "first_seen_date": "2026-08-17",
+    "last_seen_date": "2026-08-20",
+    "run_dates": [
+      "2026-08-17",
+      "2026-08-20"
+    ],
+    "update_type": "official_confirmation_and_strategy_update",
+    "first_reported_at": "2026-07-24T00:00:00Z",
+    "previous_reported_state": "WSJ 7 月 24 日：洽谈中、潜在约 100 亿美元；Bloomberg 8 月 16 日：据报道逾 70 亿美元、接近达成。",
+    "report_title": "三日合刊｜覆盖 2026-08-17 至 2026-08-19",
+    "related_event_ids": [
+      "stripe-openrouter-acquisition-rumor-2026",
+      "stripe-newsroom-openrouter-2026-08-19"
+    ],
+    "official_status": "agreed_to_acquire_not_closed",
+    "official_status_date": "2026-08-19"
+  },
+  {
     "id": "x402-python-go-spend-siwx-batch-20260818",
     "event_key": "x402:batch:python-go-spend-controls-siwx:2026-08-18",
     "event_id": "PR-3154+PR-3156+PR-3192+PR-3193+PR-3196",
